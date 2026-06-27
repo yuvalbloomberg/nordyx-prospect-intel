@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Nordyx Prospect Intelligence v4</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--bg2:#f8f9ff;--bg3:#f1f2f6;--bd:#e5e7eb;--t:#111827;--t2:#6b7280;--t3:#9ca3af;--acc:#6366F1;--sb:#ecfdf5;--st:#065f46;--sbd:#a7f3d0;--wb:#fffbeb;--wt:#92400e;--wbd:#fde68a;--db:#fef2f2;--dt:#dc2626;--dbd:#fca5a5;--ib:#eff6ff;--it:#1e40af;--ibd:#bfdbfe;--r:8px;--rl:12px;}
+@media(prefers-color-scheme:dark){:root{--bg:#0f0f13;--bg2:#1a1a24;--bg3:#242430;--bd:#2e2e3e;--t:#f9fafb;--t2:#9ca3af;--t3:#6b7280;--acc:#818cf8;--sb:#064e3b;--st:#6ee7b7;--sbd:#065f46;--wb:#78350f;--wt:#fcd34d;--wbd:#92400e;--db:#7f1d1d;--dt:#fca5a5;--dbd:#991b1b;--ib:#1e3a5f;--it:#93c5fd;--ibd:#1e40af;}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg3);min-height:100vh;padding:20px 16px;font-size:14px}
+#root{max-width:900px;margin:0 auto}
+input{width:100%;padding:9px 12px;border:1px solid var(--bd);border-radius:var(--r);font-size:13px;font-family:inherit;background:var(--bg);color:var(--t);outline:none}
+input:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(99,102,241,.12)}
+button{font-family:inherit;cursor:pointer}
+.card{background:var(--bg);border:1px solid var(--bd);border-radius:var(--rl);overflow:hidden;margin-bottom:10px}
+.card-hd{display:flex;align-items:center;gap:7px;padding:9px 14px;border-bottom:1px solid var(--bd);cursor:pointer}
+.card-bd{padding:14px}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--bg2);border-radius:var(--r);padding:10px 12px}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
+.cg{background:var(--sb);color:var(--st);border:1px solid var(--sbd)}
+.cy{background:var(--wb);color:var(--wt);border:1px solid var(--wbd)}
+.cr{background:var(--db);color:var(--dt);border:1px solid var(--dbd)}
+.cb{background:var(--ib);color:var(--it);border:1px solid var(--ibd)}
+.cp{background:#f5f3ff;color:#5b21b6;border:1px solid #ede9fe}
+.cn{background:var(--bg2);color:var(--t2);border:1px solid var(--bd)}
+.pbar-w{height:4px;background:var(--bg2);border-radius:2px;margin-top:3px}
+.pbar{height:4px;border-radius:2px}
+.sl{font-size:10px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.06em}
+.acl{width:3px;height:13px;border-radius:2px;flex-shrink:0}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.spin{animation:spin 1s linear infinite;display:inline-block}
+.tabs{display:flex;gap:2px;background:var(--bg2);border-radius:var(--r);padding:3px}
+.tab{padding:5px 14px;border-radius:6px;border:none;font-size:12px;font-weight:500;background:transparent;color:var(--t2);cursor:pointer}
+.tab.on{background:var(--bg);color:var(--t)}
+.ox{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;padding:7px 10px;background:var(--bg2);color:var(--t2);font-weight:600;border-bottom:1px solid var(--bd)}
+td{padding:7px 10px;border-bottom:1px solid var(--bd);color:var(--t);vertical-align:middle}
+ul{padding-left:16px}li{line-height:1.7;font-size:13px;color:var(--t2)}
+
+@media print {
+  .tabs, button, input { display: none !important; }
+  .card { break-inside: avoid; }
+  body { background: white; padding: 0; }
+}
+
+@media print{.tabs,button,input{display:none!important}.card{break-inside:avoid}body{background:white;padding:0}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>!function(n){"function"==typeof define&&define.amd?define(n):n()}(function(){var n,t,e,i,r,o,f,u,c,a,s,h,l,p,y,d,v,_="http://www.w3.org/2000/svg",w="http://www.w3.org/1999/xhtml",m=null,g=void 0,b={},k=[],x=/acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i,C=Array.isArray;function M(n,t){for(var e in t)n[e]=t[e];return n}function S(n){n&&n.parentNode&&n.parentNode.removeChild(n)}function $(t,e,i){var r,o,f,u={};for(f in e)"key"==f?r=e[f]:"ref"==f?o=e[f]:u[f]=e[f];if(arguments.length>2&&(u.children=arguments.length>3?n.call(arguments,2):i),"function"==typeof t&&t.defaultProps!=m)for(f in t.defaultProps)u[f]===g&&(u[f]=t.defaultProps[f]);return A(t,u,r,o,m)}function A(n,i,r,o,f){var u={type:n,props:i,key:r,ref:o,__k:m,__:m,__b:0,__e:m,__c:m,constructor:g,__v:f==m?++e:f,__i:-1,__u:0};return f==m&&t.vnode!=m&&t.vnode(u),u}function I(n){return n.children}function P(n,t){this.props=n,this.context=t}function E(n,t){if(t==m)return n.__?E(n.__,n.__i+1):m;for(var e;t<n.__k.length;t++)if((e=n.__k[t])!=m&&e.__e!=m)return e.__e;return"function"==typeof n.type?E(n):m}function F(n){if(n.__P&&n.__d){var e=n.__v,i=e.__e,r=[],o=[],f=M({},e);f.__v=e.__v+1,t.vnode&&t.vnode(f),B(n.__P,f,e,n.__n,n.__P.namespaceURI,32&e.__u?[i]:m,r,i==m?E(e):i,!!(32&e.__u),o),f.__v=e.__v,f.__.__k[f.__i]=f,G(r,f,o),e.__e=e.__=null,f.__e!=i&&H(f)}}function H(n){if((n=n.__)!=m&&n.__c!=m)return n.__e=n.__c.base=m,n.__k.some(function(t){if(t!=m&&t.__e!=m)return n.__e=n.__c.base=t.__e}),H(n)}function L(n){(!n.__d&&(n.__d=!0)&&r.push(n)&&!T.__r++||o!=t.debounceRendering)&&((o=t.debounceRendering)||f)(T)}function T(){try{for(var n,t=1;r.length;)r.length>t&&r.sort(u),n=r.shift(),t=r.length,F(n)}finally{r.length=T.__r=0}}function j(n,t,e,i,r,o,f,u,c,a,s){var h,l,p,y,d,v,_,w=i&&i.__k||k,x=t.length;for(c=O(e,t,w,c,x),h=0;h<x;h++)(p=e.__k[h])!=m&&(l=-1!=p.__i&&w[p.__i]||b,p.__i=h,v=B(n,p,l,r,o,f,u,c,a,s),y=p.__e,p.ref&&l.ref!=p.ref&&(l.ref&&Q(l.ref,m,p),s.push(p.ref,p.__c||y,p)),d==m&&y!=m&&(d=y),(_=!!(4&p.__u))||l.__k===p.__k?(c=V(p,c,n,_),_&&l.__e&&(l.__e=m)):"function"==typeof p.type&&v!==g?c=v:y&&(c=y.nextSibling),p.__u&=-7);return e.__e=d,c}function O(n,t,e,i,r){var o,f,u,c,a,s=e.length,h=s,l=0;for(n.__k=new Array(r),o=0;o<r;o++)(f=t[o])!=m&&"boolean"!=typeof f&&"function"!=typeof f?("string"==typeof f||"number"==typeof f||"bigint"==typeof f||f.constructor==String?f=n.__k[o]=A(m,f,m,m,m):C(f)?f=n.__k[o]=A(I,{children:f},m,m,m):f.constructor===g&&f.__b>0?f=n.__k[o]=A(f.type,f.props,f.key,f.ref?f.ref:m,f.__v):n.__k[o]=f,c=o+l,f.__=n,f.__b=n.__b+1,a=f.__i=z(f,e,c,h),u=m,-1!=a&&(h--,(u=e[a])&&(u.__u|=2)),u==m||u.__v==m?(-1==a&&(r>s?l--:r<s&&l++),"function"!=typeof f.type&&(f.__u|=4)):a!=c&&(a==c-1?l--:a==c+1?l++:(a>c?l--:l++,f.__u|=4))):n.__k[o]=m;if(h)for(o=0;o<s;o++)(u=e[o])!=m&&0==(2&u.__u)&&(u.__e==i&&(i=E(u)),U(u,u));return i}function V(n,t,e,i){var r,o;if("function"==typeof n.type){for(r=n.__k,o=0;r&&o<r.length;o++)r[o]&&(r[o].__=n,t=V(r[o],t,e,i));return t}n.__e!=t&&(i&&(t&&n.type&&!t.parentNode&&(t=E(n)),e.insertBefore(n.__e,t||m)),t=n.__e);do{t=t&&t.nextSibling}while(t!=m&&8==t.nodeType);return t}function z(n,t,e,i){var r,o,f,u=n.key,c=n.type,a=t[e],s=a!=m&&0==(2&a.__u);if(a===m&&null==u||s&&u==a.key&&c==a.type)return e;if(i>(s?1:0))for(r=e-1,o=e+1;r>=0||o<t.length;)if((a=t[f=r>=0?r--:o++])!=m&&0==(2&a.__u)&&u==a.key&&c==a.type)return f;return-1}function N(n,t,e){"-"==t[0]?n.setProperty(t,e==m?"":e):n[t]=e==m?"":"number"!=typeof e||x.test(t)?e:e+"px"}function R(n,t,e,i,r){var o,f;n:if("style"==t)if("string"==typeof e)n.style.cssText=e;else{if("string"==typeof i&&(n.style.cssText=i=""),i)for(t in i)e&&t in e||N(n.style,t,"");if(e)for(t in e)i&&e[t]==i[t]||N(n.style,t,e[t])}else if("o"==t[0]&&"n"==t[1])o=t!=(t=t.replace(h,"$1")),f=t.toLowerCase(),t=f in n||"onFocusOut"==t||"onFocusIn"==t?f.slice(2):t.slice(2),n.l||(n.l={}),n.l[t+o]=e,e?i?e[s]=i[s]:(e[s]=l,n.addEventListener(t,o?y:p,o)):n.removeEventListener(t,o?y:p,o);else{if(r==_)t=t.replace(/xlink(H|:h)/,"h").replace(/sName$/,"s");else if("width"!=t&&"height"!=t&&"href"!=t&&"list"!=t&&"form"!=t&&"tabIndex"!=t&&"download"!=t&&"rowSpan"!=t&&"colSpan"!=t&&"role"!=t&&"popover"!=t&&t in n)try{n[t]=e==m?"":e;break n}catch(n){}"function"==typeof e||(e==m||!1===e&&"-"!=t[4]?n.removeAttribute(t):n.setAttribute(t,"popover"==t&&1==e?"":e))}}function q(n){return function(e){if(this.l){var i=this.l[e.type+n];if(e[a]==m)e[a]=l++;else if(e[a]<i[s])return;return i(t.event?t.event(e):e)}}}function B(n,e,i,r,o,f,u,c,a,s){var h,l,p,y,d,v,_,w,b,x,$,A,E,F,H,L=e.type;if(e.constructor!==g)return m;128&i.__u&&(a=!!(32&i.__u),f=[c=e.__e=i.__e]),(h=t.__b)&&h(e);n:if("function"==typeof L)try{if(w=e.props,b=L.prototype&&L.prototype.render,x=(h=L.contextType)&&r[h.__c],$=h?x?x.props.value:h.__:r,i.__c?_=(l=e.__c=i.__c).__=l.__E:(b?e.__c=l=new L(w,$):(e.__c=l=new P(w,$),l.constructor=L,l.render=W),x&&x.sub(l),l.state||(l.state={}),l.__n=r,p=l.__d=!0,l.__h=[],l._sb=[]),b&&l.__s==m&&(l.__s=l.state),b&&L.getDerivedStateFromProps!=m&&(l.__s==l.state&&(l.__s=M({},l.__s)),M(l.__s,L.getDerivedStateFromProps(w,l.__s))),y=l.props,d=l.state,l.__v=e,p)b&&L.getDerivedStateFromProps==m&&l.componentWillMount!=m&&l.componentWillMount(),b&&l.componentDidMount!=m&&l.__h.push(l.componentDidMount);else{if(b&&L.getDerivedStateFromProps==m&&w!==y&&l.componentWillReceiveProps!=m&&l.componentWillReceiveProps(w,$),e.__v==i.__v||!l.__e&&l.shouldComponentUpdate!=m&&!1===l.shouldComponentUpdate(w,l.__s,$)){e.__v!=i.__v&&(l.props=w,l.state=l.__s,l.__d=!1),e.__e=i.__e,e.__k=i.__k,e.__k.some(function(n){n&&(n.__=e)}),k.push.apply(l.__h,l._sb),l._sb=[],l.__h.length&&u.push(l);break n}l.componentWillUpdate!=m&&l.componentWillUpdate(w,l.__s,$),b&&l.componentDidUpdate!=m&&l.__h.push(function(){l.componentDidUpdate(y,d,v)})}if(l.context=$,l.props=w,l.__P=n,l.__e=!1,A=t.__r,E=0,b)l.state=l.__s,l.__d=!1,A&&A(e),h=l.render(l.props,l.state,l.context),k.push.apply(l.__h,l._sb),l._sb=[];else do{l.__d=!1,A&&A(e),h=l.render(l.props,l.state,l.context),l.state=l.__s}while(l.__d&&++E<25);l.state=l.__s,l.getChildContext!=m&&(r=M(M({},r),l.getChildContext())),b&&!p&&l.getSnapshotBeforeUpdate!=m&&(v=l.getSnapshotBeforeUpdate(y,d)),F=h!=m&&h.type===I&&h.key==m?J(h.props.children):h,c=j(n,C(F)?F:[F],e,i,r,o,f,u,c,a,s),l.base=e.__e,e.__u&=-161,l.__h.length&&u.push(l),_&&(l.__E=l.__=m)}catch(n){if(e.__v=m,a||f!=m)if(n.then){for(e.__u|=a?160:128;c&&8==c.nodeType&&c.nextSibling;)c=c.nextSibling;f[f.indexOf(c)]=m,e.__e=c}else{for(H=f.length;H--;)S(f[H]);D(e)}else e.__e=i.__e,e.__k=i.__k,n.then||D(e);t.__e(n,e,i)}else f==m&&e.__v==i.__v?(e.__k=i.__k,e.__e=i.__e):c=e.__e=K(i.__e,e,i,r,o,f,u,a,s);return(h=t.diffed)&&h(e),128&e.__u?void 0:c}function D(n){n&&(n.__c&&(n.__c.__e=!0),n.__k&&n.__k.some(D))}function G(n,e,i){for(var r=0;r<i.length;r++)Q(i[r],i[++r],i[++r]);t.__c&&t.__c(e,n),n.some(function(e){try{n=e.__h,e.__h=[],n.some(function(n){n.call(e)})}catch(n){t.__e(n,e.__v)}})}function J(n){return"object"!=typeof n||n==m||n.__b>0?n:C(n)?n.map(J):n.constructor!==g?null:M({},n)}function K(e,i,r,o,f,u,c,a,s){var h,l,p,y,d,v,k,x=r.props||b,M=i.props,$=i.type;if("svg"==$?f=_:"math"==$?f="http://www.w3.org/1998/Math/MathML":f||(f=w),u!=m)for(h=0;h<u.length;h++)if((d=u[h])&&"setAttribute"in d==!!$&&($?d.localName==$:3==d.nodeType)){e=d,u[h]=m;break}if(e==m){if($==m)return document.createTextNode(M);e=document.createElementNS(f,$,M.is&&M),a&&(t.__m&&t.__m(i,u),a=!1),u=m}if($==m)x===M||a&&e.data==M||(e.data=M);else{if(u="textarea"==$&&M.defaultValue!=m?m:u&&n.call(e.childNodes),!a&&u!=m)for(x={},h=0;h<e.attributes.length;h++)x[(d=e.attributes[h]).name]=d.value;for(h in x)d=x[h],"dangerouslySetInnerHTML"==h?p=d:"children"==h||h in M||"value"==h&&"defaultValue"in M||"checked"==h&&"defaultChecked"in M||R(e,h,m,d,f);for(h in M)d=M[h],"children"==h?y=d:"dangerouslySetInnerHTML"==h?l=d:"value"==h?v=d:"checked"==h?k=d:a&&"function"!=typeof d||x[h]===d||R(e,h,d,x[h],f);if(l)a||p&&(l.__html==p.__html||l.__html==e.innerHTML)||(e.innerHTML=l.__html),i.__k=[];else if(p&&(e.innerHTML=""),j("template"==i.type?e.content:e,C(y)?y:[y],i,r,o,"foreignObject"==$?w:f,u,c,u?u[0]:r.__k&&E(r,0),a,s),u!=m)for(h=u.length;h--;)S(u[h]);a&&"textarea"!=$||(h="value","progress"==$&&v==m?e.removeAttribute("value"):v!=g&&(v!==e[h]||"progress"==$&&!v||"option"==$&&v!=x[h])&&R(e,h,v,x[h],f),h="checked",k!=g&&k!=e[h]&&R(e,h,k,x[h],f))}return e}function Q(n,e,i){try{if("function"==typeof n){var r="function"==typeof n.__u;r&&n.__u(),r&&e==m||(n.__u=n(e))}else n.current=e}catch(n){t.__e(n,i)}}function U(n,e,i){var r,o;if(t.unmount&&t.unmount(n),(r=n.ref)&&(r.current&&r.current!=n.__e||Q(r,m,e)),(r=n.__c)!=m){if(r.componentWillUnmount)try{r.componentWillUnmount()}catch(n){t.__e(n,e)}r.base=r.__P=m}if(r=n.__k)for(o=0;o<r.length;o++)r[o]&&U(r[o],e,i||"function"!=typeof n.type);i||S(n.__e),n.__c=n.__=n.__e=g}function W(n,t,e){return this.constructor(n,e)}function X(e,i,r){var o,f,u,c;i==document&&(i=document.documentElement),t.__&&t.__(e,i),f=(o="function"==typeof r)?m:r&&r.__k||i.__k,u=[],c=[],B(i,e=(!o&&r||i).__k=$(I,m,[e]),f||b,b,i.namespaceURI,!o&&r?[r]:f?m:i.firstChild?n.call(i.childNodes):m,u,!o&&r?r:f?f.__e:i.firstChild,o,c),G(u,e,c)}n=k.slice,t={__e:function(n,t,e,i){for(var r,o,f;t=t.__;)if((r=t.__c)&&!r.__)try{if((o=r.constructor)&&o.getDerivedStateFromError!=m&&(r.setState(o.getDerivedStateFromError(n)),f=r.__d),r.componentDidCatch!=m&&(r.componentDidCatch(n,i||{}),f=r.__d),f)return r.__E=r}catch(t){n=t}throw n}},e=0,i=function(n){return n!=m&&n.constructor===g},P.prototype.setState=function(n,t){var e;e=this.__s!=m&&this.__s!=this.state?this.__s:this.__s=M({},this.state),"function"==typeof n&&(n=n(M({},e),this.props)),n&&M(e,n),n!=m&&this.__v&&(t&&this._sb.push(t),L(this))},P.prototype.forceUpdate=function(n){this.__v&&(this.__e=!0,n&&this.__h.push(n),L(this))},P.prototype.render=I,r=[],f="function"==typeof Promise?Promise.prototype.then.bind(Promise.resolve()):setTimeout,u=function(n,t){return n.__v.__b-t.__v.__b},T.__r=0,c=Math.random().toString(8),a="__d"+c,s="__a"+c,h=/(PointerCapture)$|Capture$/i,l=0,p=q(!1),y=q(!0),d=0,v={__proto__:null,render:X,hydrate:function n(t,e){X(t,e,n)},createElement:$,h:$,Fragment:I,createRef:function(){return{current:m}},isValidElement:i,Component:P,cloneElement:function(t,e,i){var r,o,f,u,c=M({},t.props);for(f in t.type&&t.type.defaultProps&&(u=t.type.defaultProps),e)"key"==f?r=e[f]:"ref"==f?o=e[f]:c[f]=e[f]===g&&u!=g?u[f]:e[f];return arguments.length>2&&(c.children=arguments.length>3?n.call(arguments,2):i),A(t.type,c,r||t.key,o||t.ref,m)},createContext:function(n){function t(n){var e,i;return this.getChildContext||(e=new Set,(i={})[t.__c]=this,this.getChildContext=function(){return i},this.componentWillUnmount=function(){e=m},this.shouldComponentUpdate=function(n){this.props.value!=n.value&&e.forEach(function(n){n.__e=!0,L(n)})},this.sub=function(n){e.add(n);var t=n.componentWillUnmount;n.componentWillUnmount=function(){e&&e.delete(n),t&&t.call(n)}}),n.children}return t.__c="__cC"+d++,t.__=n,t.Provider=t.__l=(t.Consumer=function(n,t){return n.children(t)}).contextType=t,t},toChildArray:function n(t,e){return e=e||[],t==m||"boolean"==typeof t||(C(t)?t.some(function(t){n(t,e)}):e.push(t)),e},options:t},typeof module<"u"?module.exports=v:self.preact=v});
+//# sourceMappingURL=preact.min.umd.js.map
+</script>
+<script>!function(n,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports,require("preact")):"function"==typeof define&&define.amd?define(["exports","preact"],t):t((n||self).preactHooks={},n.preact)}(this,function(n,t){var u,r,i,o,f=0,c=[],e=t.options,a=e.__b,v=e.__r,l=e.diffed,d=e.__c,s=e.unmount,p=e.__;function y(n,t){e.__h&&e.__h(r,n,f||t),f=0;var u=r.__H||(r.__H={__:[],__h:[]});return n>=u.__.length&&u.__.push({}),u.__[n]}function h(n){return f=1,m(j,n)}function m(n,t,i){var o=y(u++,2);if(o.t=n,!o.__c&&(o.__=[i?i(t):j(void 0,t),function(n){var t=o.__N?o.__N[0]:o.__[0],u=o.t(t,n);t!==u&&(o.__N=[u,o.__[1]],o.__c.setState({}))}],o.__c=r,!r.__f)){var f=function(n,t,u){if(!o.__c.__H)return!0;var r=o.__c.__H.__.filter(function(n){return n.__c});if(r.every(function(n){return!n.__N}))return!c||c.call(this,n,t,u);var i=o.__c.props!==n;return r.some(function(n){if(n.__N){var t=n.__[0];n.__=n.__N,n.__N=void 0,t!==n.__[0]&&(i=!0)}}),c&&c.call(this,n,t,u)||i};r.__f=!0;var c=r.shouldComponentUpdate,e=r.componentWillUpdate;r.componentWillUpdate=function(n,t,u){if(this.__e){var r=c;c=void 0,f(n,t,u),c=r}e&&e.call(this,n,t,u)},r.shouldComponentUpdate=f}return o.__N||o.__}function T(n,t){var i=y(u++,4);!e.__s&&g(i.__H,t)&&(i.__=n,i.u=t,r.__h.push(i))}function _(n,t){var r=y(u++,7);return g(r.__H,t)&&(r.__=n(),r.__H=t,r.__h=n),r.__}function b(){for(var n;n=c.shift();){var t=n.__H;if(n.__P&&t)try{t.__h.some(A),t.__h.some(F),t.__h=[]}catch(u){t.__h=[],e.__e(u,n.__v)}}}e.__b=function(n){r=null,a&&a(n)},e.__=function(n,t){n&&t.__k&&t.__k.__m&&(n.__m=t.__k.__m),p&&p(n,t)},e.__r=function(n){v&&v(n),u=0;var t=(r=n.__c).__H;t&&(i===r?(t.__h=[],r.__h=[],t.__.some(function(n){n.__N&&(n.__=n.__N),n.u=n.__N=void 0})):(t.__h.some(A),t.__h.some(F),t.__h=[],u=0)),i=r},e.diffed=function(n){l&&l(n);var t=n.__c;t&&t.__H&&(t.__H.__h.length&&(1!==c.push(t)&&o===e.requestAnimationFrame||((o=e.requestAnimationFrame)||x)(b)),t.__H.__.some(function(n){n.u&&(n.__H=n.u),n.u=void 0})),i=r=null},e.__c=function(n,t){t.some(function(n){try{n.__h.some(A),n.__h=n.__h.filter(function(n){return!n.__||F(n)})}catch(u){t.some(function(n){n.__h&&(n.__h=[])}),t=[],e.__e(u,n.__v)}}),d&&d(n,t)},e.unmount=function(n){s&&s(n);var t,u=n.__c;u&&u.__H&&(u.__H.__.some(function(n){try{A(n)}catch(n){t=n}}),u.__H=void 0,t&&e.__e(t,u.__v))};var q="function"==typeof requestAnimationFrame;function x(n){var t,u=function(){clearTimeout(r),q&&cancelAnimationFrame(t),setTimeout(n)},r=setTimeout(u,35);q&&(t=requestAnimationFrame(u))}function A(n){var t=r,u=n.__c;"function"==typeof u&&(n.__c=void 0,u()),r=t}function F(n){var t=r;n.__c=n.__(),r=t}function g(n,t){return!n||n.length!==t.length||t.some(function(t,u){return t!==n[u]})}function j(n,t){return"function"==typeof t?t(n):t}n.useCallback=function(n,t){return f=8,_(function(){return n},t)},n.useContext=function(n){var t=r.context[n.__c],i=y(u++,9);return i.c=n,t?(null==i.__&&(i.__=!0,t.sub(r)),t.props.value):n.__},n.useDebugValue=function(n,t){e.useDebugValue&&e.useDebugValue(t?t(n):n)},n.useEffect=function(n,t){var i=y(u++,3);!e.__s&&g(i.__H,t)&&(i.__=n,i.u=t,r.__H.__h.push(i))},n.useErrorBoundary=function(n){var t=y(u++,10),i=h();return t.__=n,r.componentDidCatch||(r.componentDidCatch=function(n,u){t.__&&t.__(n,u),i[1](n)}),[i[0],function(){i[1](void 0)}]},n.useId=function(){var n=y(u++,11);if(!n.__){for(var t=r.__v;null!==t&&!t.__m&&null!==t.__;)t=t.__;var i=t.__m||(t.__m=[0,0]);n.__="P"+i[0]+"-"+i[1]++}return n.__},n.useImperativeHandle=function(n,t,u){f=6,T(function(){if("function"==typeof n){var u=n(t());return function(){n(null),u&&"function"==typeof u&&u()}}if(n)return n.current=t(),function(){return n.current=null}},null==u?u:u.concat(n))},n.useLayoutEffect=T,n.useMemo=_,n.useReducer=m,n.useRef=function(n){return f=5,_(function(){return{current:n}},[])},n.useState=h});
+//# sourceMappingURL=hooks.umd.js.map
+</script>
+<script>!function(n,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):n.htm=e()}(this,function(){var n=function(e,t,u,s){var r;t[0]=0;for(var p=1;p<t.length;p++){var h=t[p++],o=t[p]?(t[0]|=h?1:2,u[t[p++]]):t[++p];3===h?s[0]=o:4===h?s[1]=Object.assign(s[1]||{},o):5===h?(s[1]=s[1]||{})[t[++p]]=o:6===h?s[1][t[++p]]+=o+"":h?(r=e.apply(o,n(e,o,u,["",null])),s.push(r),o[0]?t[0]|=2:(t[p-2]=0,t[p]=r)):s.push(o)}return s},e=new Map;return function(t){var u=e.get(this);return u||(u=new Map,e.set(this,u)),(u=n(this,u.get(t)||(u.set(t,u=function(n){for(var e,t,u=1,s="",r="",p=[0],h=function(n){1===u&&(n||(s=s.replace(/^\s*\n\s*|\s*\n\s*$/g,"")))?p.push(0,n,s):3===u&&(n||s)?(p.push(3,n,s),u=2):2===u&&"..."===s&&n?p.push(4,n,0):2===u&&s&&!n?p.push(5,0,!0,s):u>=5&&((s||!n&&5===u)&&(p.push(u,0,s,t),u=6),n&&(p.push(u,n,0,t),u=6)),s=""},o=0;o<n.length;o++){o&&(1===u&&h(),h(o));for(var f=0;f<n[o].length;f++)e=n[o][f],1===u?"<"===e?(h(),p=[p],u=3):s+=e:4===u?"--"===s&&">"===e?(u=1,s=""):s=e+s[0]:r?e===r?r="":s+=e:'"'===e||"'"===e?r=e:">"===e?(h(),u=1):u&&("="===e?(u=5,t=s,s=""):"/"===e&&(u<5||">"===n[o][f+1])?(h(),3===u&&(p=p[0]),u=p,(p=p[0]).push(2,0,u),u=0):" "===e||"\t"===e||"\n"===e||"\r"===e?(h(),u=2):s+=e),3===u&&"!--"===s&&(u=4,p=p[0])}return h(),p}(t)),u),arguments,[])).length>1?u:u[0]}});
+</script>
+<script>(function(){
+var h=preact.h,render=preact.render;
+var useState=preactHooks.useState,useEffect=preactHooks.useEffect;
+var html=htm.bind(h);
+
+// ── DATABASE ──────────────────────────────────────────────────
+var DB=[
+  // CONVERT — fully replaceable by Nordyx
+  {n:"Hextom Ultimate Sales Boost",p:["hextom.com/js/ultimatesalesboost","hextom_usb","ht_usb"],c:"full",f:"Convert – Countdown Timer",cat:"Convert",cost:19},
+  {n:"ReConvert",p:["stilyoapps.com/reconvert"],c:"full",f:"Convert – Product Upsell Widget",cat:"Convert",cost:29},
+  {n:"AfterSell",p:["aftersell.app","aftersell.hooks"],c:"full",f:"Convert – Product Upsell Widget",cat:"Convert",cost:29},
+  {n:"Bold Upsell",p:["upsells.boldapps.net","BOLD.upsell"],c:"full",f:"Convert – Product Upsell Widget",cat:"Convert",cost:29},
+  {n:"In Cart Upsell",p:["incartupsell.com"],c:"full",f:"Convert – Product Upsell Widget",cat:"Convert",cost:19},
+  {n:"Zipify OCU",p:["zipify","zipifyOCU"],c:"full",f:"Convert – Product Upsell Widget",cat:"Convert",cost:35},
+  {n:"UpCart",p:["upcart.app","upcart"],c:"full",f:"Convert – Cart Drawer",cat:"Convert",cost:29},
+  {n:"iCart",p:["icart.app","iCartConfig"],c:"full",f:"Convert – Cart Drawer",cat:"Convert",cost:14},
+  {n:"Slide Cart Drawer",p:["slide-cart.com","slideCart"],c:"full",f:"Convert – Cart Drawer",cat:"Convert",cost:19},
+  {n:"Bold Bundles",p:["bundles.boldapps.net","BOLD.bundles"],c:"full",f:"Convert – Product Bundles",cat:"Convert",cost:25},
+  {n:"Fast Bundle",p:["api.fastbundle.co","FastBundleConf.bundleBox"],c:"full",f:"Convert – Product Bundles",cat:"Convert",cost:19},
+  {n:"WideBundle",p:["widebundle.com"],c:"full",f:"Convert – Product Bundles",cat:"Convert",cost:19},
+  {n:"Bundle Bear",p:["bundlebear"],c:"full",f:"Convert – Product Bundles",cat:"Convert",cost:25},
+  {n:"Frequently Bought Together App",p:["codeblackbelt.com/js/modules/frequently-bought-together"],c:"full",f:"Convert – Frequently Bought Together",cat:"Convert",cost:19},
+  {n:"Globo Also Bought",p:["globo.alsobought"],c:"full",f:"Convert – Frequently Bought Together",cat:"Convert",cost:9},
+  {n:"Bold Product Options",p:["option.boldapps.net","BOLD.options.version"],c:"full",f:"Convert – Product Options",cat:"Convert",cost:19},
+  {n:"HulkApps Infinite Options",p:["hulkapps.po_url"],c:"full",f:"Convert – Product Options",cat:"Convert",cost:9},
+  {n:"ShopPad Infinite Options",p:["Shoppad.apps.infiniteoptions"],c:"full",f:"Convert – Product Options",cat:"Convert",cost:9},
+  {n:"Hextom Free Shipping Bar",p:["hextom.com/js/freeshippingbar"],c:"full",f:"Convert – Free Shipping Progress Bar",cat:"Convert",cost:9},
+  {n:"qikify Sticky ATC",p:["qikify.com","qikify"],c:"full",f:"Convert – Sticky Add-To-Cart",cat:"Convert",cost:9},
+  {n:"Secomapp Free Gifts",p:["cdn.secomapp.com","SECOMAPP"],c:"full",f:"Convert – Gift with Purchase",cat:"Convert",cost:29},
+  // PROMOTE — fully replaceable
+  {n:"Hello Bar",p:["hellobar.com","hellobar.js","HelloBar","hellobarSiteSettings"],c:"full",f:"Promote – Smart Banner",cat:"Promote",cost:29},
+  {n:"Hextom Announcement Bar",p:["hextom.com/js/announcementbar","hextom_ann"],c:"full",f:"Promote – Announcement Bar",cat:"Promote",cost:9},
+  // RETAIN — fully replaceable
+  {n:"Privy",p:["privy.com","shopify.privy.com","PrivyWidget","privySettings"],c:"full",f:"Retain – Exit Intent Modal",cat:"Retain",cost:30},
+  {n:"OptiMonk",p:["optimonk.com","optimonk"],c:"full",f:"Retain – Exit Intent Modal",cat:"Retain",cost:39},
+  {n:"Wisepops",p:["loader.wisepops.com","WisePopsObject"],c:"full",f:"Retain – Exit Intent Modal",cat:"Retain",cost:49},
+  {n:"Sleeknote",p:["SleekNote.SleekNotes","sleeknoteScriptTag"],c:"full",f:"Retain – Exit Intent Modal",cat:"Retain",cost:49},
+  {n:"JustUno",p:["my.jst.ai","cdn.justuno.com","JustunoApp"],c:"full",f:"Retain – Exit Intent Modal",cat:"Retain",cost:45},
+  {n:"Poptin",p:["poptin.com","poptinSmart"],c:"full",f:"Retain – Exit Intent Modal",cat:"Retain",cost:25},
+  {n:"Wunderkind",p:["bounceexchange.com","smarterhq.io","bouncex"],c:"full",f:"Retain – Exit Intent Modal",cat:"Retain",cost:99},
+  {n:"Back In Stock App",p:["app.backinstock.org"],c:"full",f:"Retain – Back-in-Stock Alerts",cat:"Retain",cost:19},
+  {n:"Notify Me",p:["notify-me.co","notifyMe"],c:"full",f:"Retain – Back-in-Stock Alerts",cat:"Retain",cost:19},
+  {n:"Swym Wishlist Plus",p:["swappName","swymCart"],c:"full",f:"Retain – Smart Wishlist",cat:"Retain",cost:29},
+  {n:"Wishlist King",p:["Appmate.version","Appmate.wk"],c:"full",f:"Retain – Smart Wishlist",cat:"Retain",cost:9},
+  {n:"Wishify",p:["wishify.app","wishify"],c:"full",f:"Retain – Smart Wishlist",cat:"Retain",cost:9},
+  // INFORM — fully replaceable
+  {n:"Beeketing",p:["sdk.beeketing.com","beeketingAnalyticsParams"],c:"full",f:"Inform – Behavioral Indicator",cat:"Inform",cost:29},
+  {n:"Nudgify",p:["nudgify.com","nudgify.cart"],c:"full",f:"Inform – Behavioral Indicator",cat:"Inform",cost:29},
+  {n:"FOMO",p:["fomo.com/api","fomo.version"],c:"full",f:"Inform – Behavioral Indicator",cat:"Inform",cost:19},
+  {n:"CareCart Sales Pop",p:["sales-pop.carecart.io"],c:"full",f:"Inform – Behavioral Indicator",cat:"Inform",cost:9},
+  // PARTIAL
+  {n:"Fera Reviews",p:["cdn.fera.ai","feraJsUrl"],c:"partial",f:"Inform – Behavioral Indicator display",cat:"Reviews",cost:29},
+  {n:"Vitals",p:["appsolve.io","VITALS"],c:"partial",f:"Promote – Smart Banner (partial)",cat:"Promote",cost:49},
+  {n:"Bold Commerce",p:["boldapps.net","boldcommerce.com"],c:"partial",f:"Convert – Bundles / Options (partial)",cat:"Convert",cost:49},
+  // EXPERIMENTS — not replaceable
+  {n:"VWO",p:["vwo.com","wingify","_vwo_code"],c:"none",cat:"Experiments",cost:200},
+  {n:"Intelligems",p:["intelligems.io","Intelligems"],c:"none",cat:"Experiments",cost:99},
+  {n:"Shoplift",p:["shoplift.app","Shoplift"],c:"none",cat:"Experiments",cost:149},
+  {n:"Convert Experiences",p:["convert.com/js"],c:"none",cat:"Experiments",cost:99},
+  {n:"Varify",p:["varify.io","varify"],c:"none",cat:"Experiments",cost:99},
+  // PERSONALIZATION — not replaceable
+  {n:"Rebuy",p:["rebuyengine.com","rebuyConfig"],c:"none",cat:"Personalization",cost:99},
+  {n:"Nosto",p:["connect.nosto.com"],c:"none",cat:"Personalization",cost:150},
+  {n:"Black Crow AI",p:["blackcrow.ai","BlackCrow"],c:"none",cat:"Personalization",cost:299},
+  {n:"Athos Commerce",p:["athoscommerce.com","AthosCommerce"],c:"none",cat:"Personalization",cost:199},
+  {n:"LimeSpot",p:["limespot.co","limespot"],c:"none",cat:"Personalization",cost:50},
+  // REVIEWS — not replaceable
+  {n:"Yotpo Reviews",p:["staticw2.yotpo.com","yotpo"],c:"none",cat:"Reviews",cost:79},
+  {n:"Junip",p:["juniphq.com","junipLoaded"],c:"none",cat:"Reviews",cost:29},
+  {n:"Okendo",p:["okendo.io","okeReviewsWidgetOnInit"],c:"none",cat:"Reviews",cost:79},
+  {n:"Loox",p:["loox.io/widget","loox_global_hash"],c:"none",cat:"Reviews",cost:29},
+  {n:"Judge.me",p:["cdn.judge.me","judgeme"],c:"none",cat:"Reviews",cost:15},
+  {n:"Stamped",p:["stamped.io","StampedFn"],c:"none",cat:"Reviews",cost:29},
+  {n:"Bazaarvoice",p:["apps.bazaarvoice.com","BV.api"],c:"none",cat:"Reviews",cost:299},
+  // SEARCH — not replaceable
+  {n:"Searchanise",p:["searchanise.com","Searchanise"],c:"none",cat:"Search",cost:45},
+  {n:"Boost Commerce",p:["bcSfFilterConfig","boostPFSAppConfig"],c:"none",cat:"Search",cost:49},
+  {n:"Klevu",p:["js.klevu.","klevu.version"],c:"none",cat:"Search",cost:499},
+  {n:"Algolia",p:["AlgoliaSearch","ALGOLIA_INSIGHTS_SRC"],c:"none",cat:"Search",cost:299},
+  {n:"Clerk.io",p:["clerk.io/","__clerk_cb_0"],c:"none",cat:"Search",cost:99},
+  {n:"Kimonix",p:["kimonix.app","Kimonix"],c:"none",cat:"Search",cost:99},
+  // ANALYTICS — not replaceable
+  {n:"Triple Whale",p:["cdn.triplewhale.com"],c:"none",cat:"Analytics",cost:129},
+  {n:"Northbeam",p:["northbeam.io"],c:"none",cat:"Analytics",cost:299},
+  {n:"Elevar",p:["getelevar.com"],c:"none",cat:"Analytics",cost:200},
+  {n:"Hotjar",p:["static.hotjar.com","hj.apiUrlBase"],c:"none",cat:"Analytics",cost:32},
+  {n:"Lucky Orange",p:["luckyorange.com","LOApi"],c:"none",cat:"Analytics",cost:18},
+  {n:"Polar Analytics",p:["polaranalytics.co","Polar"],c:"none",cat:"Analytics",cost:300},
+  {n:"Blotout",p:["edgetag","edgetagProviders"],c:"none",cat:"Analytics",cost:299},
+  {n:"Tracify",p:["tracify.ai","tracify"],c:"none",cat:"Analytics",cost:199},
+  {n:"Fospha",p:["fospha.com","Fospha"],c:"none",cat:"Analytics",cost:499},
+  // EMAIL / SMS — not replaceable
+  {n:"Klaviyo",p:["klaviyo.com","KlaviyoSubscribe"],c:"none",cat:"Email/SMS",cost:150},
+  {n:"Omnisend",p:["omnisrc.com","_omnisend"],c:"none",cat:"Email/SMS",cost:59},
+  {n:"Attentive",p:["cdn.attn.tv","__attentive"],c:"none",cat:"Email/SMS",cost:299},
+  {n:"Postscript",p:["ps.postscript.io"],c:"none",cat:"Email/SMS",cost:100},
+  {n:"Mailchimp",p:["mailchimp","chimpstatic"],c:"none",cat:"Email/SMS",cost:20},
+  {n:"ActiveCampaign",p:["activehosted.com","acEnableTracking"],c:"none",cat:"Email/SMS",cost:49},
+  // AFFILIATE — not replaceable
+  {n:"Refersion",p:["refersion.com","rfrsn"],c:"none",cat:"Affiliate",cost:89},
+  {n:"UpPromote",p:["uppromote.com","UpPromote"],c:"none",cat:"Affiliate",cost:29},
+  {n:"Affiliatly",p:["static.affiliatly.com"],c:"none",cat:"Affiliate",cost:16},
+  {n:"GRIN",p:["grin-sdk.js","Grin"],c:"none",cat:"Affiliate",cost:299},
+  // LOYALTY — not replaceable
+  {n:"Smile.io",p:["smile.io","sweettooth.io","Smile.channel_key"],c:"none",cat:"Loyalty",cost:49},
+  {n:"LoyaltyLion",p:["sdk.loyaltylion.net","loyaltylion.version"],c:"none",cat:"Loyalty",cost:159},
+  {n:"Yotpo Loyalty",p:["cdn-loyalty.yotpo.com","SwellConfig"],c:"none",cat:"Loyalty",cost:199},
+  {n:"Rivo Loyalty",p:["ba_loy_init.js","ba_loy"],c:"none",cat:"Loyalty",cost:49},
+  {n:"Growave",p:["socialshopwave.com"],c:"none",cat:"Loyalty",cost:49},
+  // SUPPORT — not replaceable
+  {n:"Gorgias",p:["config.gorgias.chat","gorgiasChat"],c:"none",cat:"Support",cost:60},
+  {n:"Tidio",p:["code.tidio.co","tidioChatApi"],c:"none",cat:"Support",cost:29},
+  {n:"Zendesk",p:["zopim.com","zESettings"],c:"none",cat:"Support",cost:55},
+  // VIDEO — not replaceable
+  {n:"Tolstoy",p:["gotolstoy.com","tolstoy"],c:"none",cat:"Video",cost:49},
+  {n:"Vidjet",p:["vidjet.io"],c:"none",cat:"Video",cost:29},
+  // SUBSCRIPTION — not replaceable
+  {n:"ReCharge",p:["rechargecdn.com","ReChargeWidget"],c:"none",cat:"Subscription",cost:99},
+  {n:"Skio",p:["skio.com","skioConfig"],c:"none",cat:"Subscription",cost:299},
+  // RETURNS — not replaceable
+  {n:"Loop Returns",p:["loopreturns.com","Loop.config"],c:"none",cat:"Returns",cost:59},
+  {n:"AfterShip Returns",p:["returnscenter.com","aftership.__VERSION__"],c:"none",cat:"Returns",cost:23},
+  // QUIZ — not replaceable
+  {n:"RevenueHunt",p:["revenuehunt.com","RevenueHuntConfig"],c:"none",cat:"Quiz",cost:29},
+  {n:"Octane AI",p:["octaneai.com","OctaneConfig"],c:"none",cat:"Quiz",cost:50},
+  // OTHER
+  {n:"Simprosys",p:["simprosys.com","Simprosys"],c:"none",cat:"Other",cost:29},
+  {n:"Weglot",p:["cdn.weglot.com","Weglot"],c:"none",cat:"Other",cost:99},
+  {n:"PageFly",p:["pagefly.io","pfPageFly"],c:"none",cat:"Other",cost:29},
+  {n:"Shogun",p:["shogun.io","ShogunFrontend"],c:"none",cat:"Other",cost:99},
+  {n:"UserWay",p:["cdn.userway.org","userway"],c:"none",cat:"Other",cost:49},
+];
+
+var CATS=["Convert","Promote","Retain","Inform","Experiments","Personalization","Reviews","Search","Analytics","Email/SMS","Affiliate","Loyalty","Support","Video","Subscription","Returns","Quiz","Other"];
+var COMP=["Rebuy","Nosto","Shoplift","VWO","Intelligems","Okendo","Smile.io","LoyaltyLion","Searchanise","Algolia","Clerk.io"];
+var RM={
+  P0:{label:"Critical — build now",color:"#ef4444",items:["Experiments","Personalization"]},
+  P1:{label:"High priority",color:"#f59e0b",items:["Reviews","Loyalty","Wishlist","Back in Stock"]},
+  P2:{label:"Medium — H2",color:"#6366F1",items:["Quiz","Merchandising"]},
+  P3:{label:"Low — future",color:"#10b981",items:["Search","Subscriptions"]},
+  P4:{label:"Exploratory",color:"#8b5cf6",items:["Video","Returns","Affiliate"]},
+};
+
+var MATRIX=[
+  {feat:"Upsell / Cross-sell",nordyx:"full",rebuy:"full",nosto:"full",shoplift:"none",vwo:"none",intelligems:"none"},
+  {feat:"Bundle Builder",nordyx:"full",rebuy:"partial",nosto:"none",shoplift:"none",vwo:"none",intelligems:"none"},
+  {feat:"Countdown Timers",nordyx:"full",rebuy:"none",nosto:"none",shoplift:"none",vwo:"none",intelligems:"none"},
+  {feat:"Announcement Bars",nordyx:"full",rebuy:"none",nosto:"none",shoplift:"none",vwo:"none",intelligems:"none"},
+  {feat:"Exit Intent Popups",nordyx:"full",rebuy:"none",nosto:"none",shoplift:"none",vwo:"partial",intelligems:"none"},
+  {feat:"Cart Drawer",nordyx:"full",rebuy:"none",nosto:"none",shoplift:"none",vwo:"none",intelligems:"none"},
+  {feat:"Sticky ATC",nordyx:"full",rebuy:"none",nosto:"none",shoplift:"none",vwo:"none",intelligems:"none"},
+  {feat:"Back in Stock",nordyx:"full",rebuy:"none",nosto:"none",shoplift:"none",vwo:"none",intelligems:"none"},
+  {feat:"A/B Testing",nordyx:"none",rebuy:"none",nosto:"none",shoplift:"full",vwo:"full",intelligems:"full"},
+  {feat:"Price Experimentation",nordyx:"none",rebuy:"none",nosto:"none",shoplift:"partial",vwo:"none",intelligems:"full"},
+  {feat:"Personalization Engine",nordyx:"partial",rebuy:"full",nosto:"full",shoplift:"none",vwo:"none",intelligems:"none"},
+  {feat:"Review Display Widget",nordyx:"full",rebuy:"none",nosto:"partial",shoplift:"none",vwo:"none",intelligems:"none"},
+  {feat:"Competitor Intelligence",nordyx:"full",rebuy:"none",nosto:"none",shoplift:"none",vwo:"none",intelligems:"none"},
+  {feat:"AI Agent Support",nordyx:"full",rebuy:"none",nosto:"none",shoplift:"none",vwo:"none",intelligems:"none"},
+  {feat:"Unified Runtime",nordyx:"full",rebuy:"none",nosto:"none",shoplift:"none",vwo:"none",intelligems:"none"},
+  {feat:"Pricing",nordyx:"$39-99",rebuy:"$99+",nosto:"$$$",shoplift:"$149+",vwo:"$200+",intelligems:"$99+"},
+];
+
+// System prompt for Claude API
+var SYS=[
+  "You are a Shopify store intelligence analyst for Nordyx.",
+  "Nordyx has exactly 15 apps: CONVERT: Countdown Timer, Product Upsell Widget, Cart Drawer, Product Bundles, Frequently Bought Together, Product Options, Free Shipping Progress Bar, Sticky Add-To-Cart.",
+  "PROMOTE: Smart Banner, Announcement Bar.",
+  "RETAIN: Exit Intent Modal, Back-in-Stock Alerts, Smart Wishlist.",
+  "INFORM: Behavioral Indicator, Stock Counter.",
+  "Research the store using web search and return ONLY valid JSON with no markdown:",
+  '{"store_name":"","country":"","industry":"","employees":"","social_following":"","sku_count":"","priority":"High|Medium|Low","overall_score":0,',
+  '"additional_apps":[{"name":"","cat":"Convert|Promote|Retain|Inform|Experiments|Personalization|Reviews|Search|Analytics|Email/SMS|Affiliate|Loyalty|Support|Video|Subscription|Returns|Quiz|Other","cov":"full|partial|none","feat":"or null","cost":0}],',
+  '"shopify_plus":false,"ai_score":0,"ai_openness":0,"agent_readiness":0,"has_llms_txt":false,"ai_summary":"",',
+  '"competitors":[{"name":"","domain":"","why":""}],"pain_points":["","",""],"nordyx_pitch":["",""]}',
+  "nordyx_pitch must be an array of 4-6 short analytical bullet strings, each max 20 words, no sales language.",
+  "Cover: 1) store profile snapshot 2) which specific apps Nordyx replaces 3) stack fragmentation pain 4) honest gap what Nordyx does NOT cover 5) AI readiness one-liner 6) Nordyx Spy top competitors to track."
+].join(" ");
+
+// ── UTILS ─────────────────────────────────────────────────────
+function scan(s){
+  var l=s.toLowerCase();
+  return DB.filter(function(a){
+    return a.p.some(function(p){
+      return l.indexOf(p.toLowerCase())!==-1;
+    });
+  }).map(function(a){
+    return {name:a.n,cat:a.cat,cov:a.c,feat:a.f||null,cost:a.cost};
+  });
+}
+
+function fhtml(d){
+  return fetch("https://api.allorigins.win/get?url="+encodeURIComponent("https://"+d),{signal:AbortSignal.timeout(8000)})
+    .then(function(r){return r.json();})
+    .then(function(j){return j.contents||"";})
+    .catch(function(){return "";});
+}
+
+function calcFin(apps){
+  var total=apps.reduce(function(s,a){return s+(a.cost||0);},0);
+  var rep=apps.filter(function(a){return a.cov==="full";}).reduce(function(s,a){return s+(a.cost||0);},0)
+    +apps.filter(function(a){return a.cov==="partial";}).reduce(function(s,a){return s+Math.round((a.cost||0)*0.5);},0);
+  var fc=apps.filter(function(a){return a.cov==="full";}).length;
+  var plan=fc>=6||rep>=80?"Pro":"Starter";
+  var pp=plan==="Pro"?99:39;
+  return{total:total,rep:rep,savings:Math.max(0,rep-pp),plan:plan,pp:pp,roi:pp>0?Math.round(Math.max(0,rep-pp)/pp*100)+"%":"-"};
+}
+
+function calcPain(apps){
+  return{
+    sprawl:apps.length>10?"High":apps.length>5?"Medium":"Low",
+    multiExp:apps.filter(function(a){return a.cat==="Experiments";}).length>1,
+    multiPer:apps.filter(function(a){return a.cat==="Personalization";}).length>1,
+    scriptComp:apps.length>10?"High":apps.length>5?"Medium":"Low",
+    maturity:apps.filter(function(a){return a.cat==="Subscription";}).length>0?"Mature":
+             apps.filter(function(a){return a.cat==="Analytics";}).length>0?"Growing":"Early"
+  };
+}
+
+function calcOpp(apps,f,ai,isPlus){
+  var ss=f.total>400?25:f.total>200?18:f.total>100?12:5;
+  var rp=f.total>0?f.rep/f.total:0;
+  var rs=rp>0.6?25:rp>0.4?18:rp>0.2?12:5;
+  var cs=apps.length>12?25:apps.length>8?18:apps.length>4?12:5;
+  // Shopify Plus = harder to close as early adopter, lower pilot fit
+  var ps=isPlus?5:ai>50?15:10;
+  return{ss:ss,rs:rs,cs:cs,ps:ps,t:ss+rs+cs+ps};
+}
+
+function missingCats(apps){
+  var seen=new Set(apps.map(function(a){return a.cat;}));
+  return CATS.filter(function(c){return !seen.has(c);});
+}
+
+// ── COMPONENTS ────────────────────────────────────────────────
+function Sec(props){
+  var title=props.title,accent=props.accent,children=props.children;
+  var open=props.open!==undefined?props.open:true;
+  var state=useState(open);
+  var op=state[0],setOp=state[1];
+  return html`<div class="card">
+    <div class="card-hd" onClick=${function(){setOp(!op);}}>
+      <div class="acl" style=${{background:accent}}></div>
+      <span class="sl" style=${{flex:1}}>${title}</span>
+      <span style=${{fontSize:"11px",color:"var(--t3)"}}>${op?"▲":"▼"}</span>
+    </div>
+    ${op?html`<div class="card-bd">${children}</div>`:""}
+  </div>`;
+}
+
+function CB(props){
+  var c=props.c;
+  return html`<span class=${"badge "+(c==="full"?"cg":c==="partial"?"cy":"cn")}>${c==="full"?"✓ Full":c==="partial"?"~ Partial":"✗ None"}</span>`;
+}
+
+function PB(props){
+  var p=props.p||"Medium";
+  return html`<span class=${"badge "+(p==="High"?"cr":p==="Medium"?"cy":"cg")}>${p}</span>`;
+}
+
+function SBar(props){
+  var label=props.label,value=props.value,color=props.color,max=props.max||100;
+  return html`<div style=${{marginBottom:"8px"}}>
+    <div style=${{display:"flex",justifyContent:"space-between",marginBottom:"3px"}}>
+      <span style=${{fontSize:"12px",color:"var(--t2)"}}>${label}</span>
+      <span style=${{fontSize:"12px",fontWeight:"500"}}>${value}${props.max?"/"+props.max:""}</span>
+    </div>
+    <div class="pbar-w"><div class="pbar" style=${{width:Math.min(value/max*100,100)+"%",background:color}}></div></div>
+  </div>`;
+}
+
+function MatCell(props){
+  var v=props.v;
+  var cls=v==="full"?"cg":v==="partial"?"cy":v==="none"?"cn":"";
+  var lbl=v==="full"?"✓":v==="partial"?"~":v==="none"?"✗":v;
+  return html`<td style=${{textAlign:"center"}}><span class=${"badge "+cls}>${lbl}</span></td>`;
+}
+
+function BarRow(props){
+  var label=props.label,value=props.value,max=props.max,color=props.color||"var(--acc)";
+  var pct=max>0?Math.round(value/max*100):0;
+  return html`<div style=${{display:"flex",alignItems:"center",gap:"8px",marginBottom:"6px"}}>
+    <span style=${{fontSize:"12px",color:"var(--t)",minWidth:"160px",flexShrink:0}}>${label}</span>
+    <div style=${{flex:1,height:"14px",background:"var(--bg2)",borderRadius:"3px",overflow:"hidden"}}>
+      <div style=${{width:pct+"%",height:"100%",background:color,borderRadius:"3px"}}></div>
+    </div>
+    <span style=${{fontSize:"11px",color:"var(--t3)",minWidth:"24px",textAlign:"right"}}>${value}</span>
+  </div>`;
+}
+
+// ── PROSPECT CARD ─────────────────────────────────────────────
+function ProspectCard(props){
+  var data=props.data,apiKey=props.apiKey;
+
+
+  var apps=data.apps||[];
+  var f=calcFin(apps),pa=calcPain(apps),op=calcOpp(apps,f,data.ai_score||0,data.shopify_plus);
+  var bycat={};
+  apps.forEach(function(a){if(!bycat[a.cat])bycat[a.cat]=[];bycat[a.cat].push(a);});
+  var full=apps.filter(function(a){return a.cov==="full";}),
+      part=apps.filter(function(a){return a.cov==="partial";}),
+      none=apps.filter(function(a){return a.cov==="none";});
+  var ai=data.ai_score||0,aic=ai>=70?"#10b981":ai>=40?"#f59e0b":"#ef4444";
+  var score=data.overall_score||op.t;
+  var mc=missingCats(apps);
+
+
+
+  return html`<div>
+    <div class="card">
+      <div class="card-bd">
+        <!-- Store name + badges -->
+        <div style=${{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:"12px",marginBottom:"14px"}}>
+          <div>
+            <div style=${{display:"flex",alignItems:"center",gap:"8px",marginBottom:"6px"}}>
+              <span style=${{fontSize:"18px",fontWeight:"700",color:"var(--t)"}}>${data.store_name||data.domain}</span>
+              <${PB} p=${data.priority}/>
+            </div>
+            <div style=${{display:"flex",gap:"5px",flexWrap:"wrap"}}>
+              <span class="badge cb">${data.domain}</span>
+              ${data.shopify_plus?html`<span class="badge cp">Shopify Plus</span>`:""}
+              ${data.country?html`<span class="badge cn">${data.country}</span>`:""}
+              ${data.industry?html`<span class="badge cn">${data.industry}</span>`:""}
+              ${data.employees?html`<span class="badge cn">${data.employees} employees</span>`:""}
+              ${data.social_following?html`<span class="badge cn">${data.social_following} followers</span>`:""}
+              ${data.sku_count?html`<span class="badge cn">${data.sku_count} SKUs</span>`:""}
+            </div>
+          </div>
+          <div style=${{textAlign:"center",background:"var(--bg2)",borderRadius:"var(--r)",padding:"10px 18px"}}>
+            <div style=${{fontSize:"30px",fontWeight:"700",color:"var(--acc)",lineHeight:1}}>${score}</div>
+            <div style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginTop:"2px"}}>Opp. Score</div>
+          </div>
+        </div>
+
+        <!-- SAVINGS PANEL — prominent -->
+        <div style=${{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:"10px",marginBottom:"12px"}}>
+          <div style=${{background:"var(--db)",border:"1px solid var(--dbd)",borderRadius:"var(--r)",padding:"12px 14px"}}>
+            <div style=${{fontSize:"10px",color:"var(--dt)",textTransform:"uppercase",letterSpacing:".05em",marginBottom:"4px"}}>Current app spend</div>
+            <div style=${{fontSize:"22px",fontWeight:"700",color:"var(--dt)",lineHeight:1}}>$${f.total}<span style=${{fontSize:"12px",fontWeight:"400"}}>/mo</span></div>
+            <div style=${{fontSize:"11px",color:"var(--dt)",marginTop:"3px"}}>${apps.length} apps · $${f.total*12}/yr</div>
+          </div>
+          <div style=${{background:"var(--wb)",border:"1px solid var(--wbd)",borderRadius:"var(--r)",padding:"12px 14px"}}>
+            <div style=${{fontSize:"10px",color:"var(--wt)",textTransform:"uppercase",letterSpacing:".05em",marginBottom:"4px"}}>Nordyx replaces</div>
+            <div style=${{fontSize:"22px",fontWeight:"700",color:"var(--wt)",lineHeight:1}}>$${f.rep}<span style=${{fontSize:"12px",fontWeight:"400"}}>/mo</span></div>
+            <div style=${{fontSize:"11px",color:"var(--wt)",marginTop:"3px"}}>${full.length} of ${apps.length} apps · ${f.plan} plan ($${f.pp}/mo)</div>
+          </div>
+          <div style=${{background:"var(--sb)",border:"1px solid var(--sbd)",borderRadius:"var(--r)",padding:"12px 14px"}}>
+            <div style=${{fontSize:"10px",color:"var(--st)",textTransform:"uppercase",letterSpacing:".05em",marginBottom:"4px"}}>Net saving with Nordyx</div>
+            <div style=${{fontSize:"22px",fontWeight:"700",color:"var(--st)",lineHeight:1}}>$${f.savings}<span style=${{fontSize:"12px",fontWeight:"400"}}>/mo</span></div>
+            <div style=${{fontSize:"11px",color:"var(--st)",marginTop:"3px"}}>$${f.savings*12}/yr · ROI ${f.roi}</div>
+          </div>
+        </div>
+
+        ${mc.length?html`<div style=${{padding:"8px 10px",background:"var(--wb)",borderRadius:"var(--r)",border:"1px solid var(--wbd)"}}>
+          <span style=${{fontSize:"11px",color:"var(--wt)",fontWeight:"600"}}>Missing categories: </span>
+          <span style=${{fontSize:"11px",color:"var(--wt)"}}>${mc.join(", ")}</span>
+        </div>`:""}
+      </div>
+    </div>
+
+    <${Sec} title=${"App Inventory ("+apps.length+")"} accent="#6366F1">
+      ${CATS.filter(function(c){return bycat[c]&&bycat[c].length;}).map(function(c){return html`
+        <div style=${{marginBottom:"12px"}}>
+          <div style=${{fontSize:"11px",fontWeight:"600",color:"var(--t2)",textTransform:"uppercase",marginBottom:"6px"}}>${c} (${bycat[c].length})</div>
+          <div style=${{display:"flex",flexWrap:"wrap",gap:"5px"}}>${bycat[c].map(function(a){return html`
+            <div style=${{display:"flex",alignItems:"center",gap:"4px",padding:"4px 10px",borderRadius:"20px",fontSize:"12px",background:"var(--bg2)",border:"1px solid var(--bd)"}}>
+              ${a.name} <${CB} c=${a.cov}/>
+            </div>`;
+          })}</div>
+        </div>`;
+      })}
+    <//>
+
+    <${Sec} title="Nordyx Coverage" accent="#10b981">
+      <div class="g3" style=${{marginBottom:"12px"}}>
+        <div class="stat"><div style=${{fontSize:"10px",color:"var(--t3)",marginBottom:"2px"}}>FULL</div><div style=${{fontSize:"24px",fontWeight:"700",color:"var(--st)"}}>${full.length}</div></div>
+        <div class="stat"><div style=${{fontSize:"10px",color:"var(--t3)",marginBottom:"2px"}}>PARTIAL</div><div style=${{fontSize:"24px",fontWeight:"700",color:"var(--wt)"}}>${part.length}</div></div>
+        <div class="stat"><div style=${{fontSize:"10px",color:"var(--t3)",marginBottom:"2px"}}>NOT COVERED</div><div style=${{fontSize:"24px",fontWeight:"700",color:"var(--dt)"}}>${none.length}</div></div>
+      </div>
+      ${full.length?html`<div style=${{marginBottom:"8px"}}><p style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginBottom:"5px"}}>Fully replaceable</p><div style=${{display:"flex",flexWrap:"wrap",gap:"5px"}}>${full.map(function(a){return html`<span class="badge cg">✓ ${a.name}${a.feat?" → "+a.feat:""}</span>`;})}</div></div>`:""}
+      ${part.length?html`<div style=${{marginBottom:"8px"}}><p style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginBottom:"5px"}}>Partially replaceable</p><div style=${{display:"flex",flexWrap:"wrap",gap:"5px"}}>${part.map(function(a){return html`<span class="badge cy">~ ${a.name}</span>`;})}</div></div>`:""}
+      ${none.length?html`<div><p style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginBottom:"5px"}}>Outside Nordyx scope</p><div style=${{display:"flex",flexWrap:"wrap",gap:"5px"}}>${none.map(function(a){return html`<span class="badge cn">${a.name}</span>`;})}</div></div>`:""}
+    <//>
+
+    <${Sec} title="Financial Analysis" accent="#10b981">
+      <div class="g2">
+        ${[["Total App Spend","$"+f.total+"/mo","var(--t)"],["Replaceable Spend","$"+f.rep+"/mo","var(--wt)"],["Estimated Savings","$"+f.savings+"/mo","var(--st)"],["Recommended Plan",f.plan+" ($"+f.pp+"/mo)","var(--acc)"],["ROI",f.roi,"var(--st)"]].map(function(x){return html`
+          <div class="stat"><div style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginBottom:"2px"}}>${x[0]}</div><div style=${{fontSize:"14px",fontWeight:"600",color:x[2]}}>${x[1]}</div></div>`;
+        })}
+      </div>
+    <//>
+
+    <${Sec} title="Pain Indicators" accent="#ef4444">
+      <div class="g2">
+        ${[["App Sprawl",pa.sprawl,pa.sprawl==="High"?"cr":pa.sprawl==="Medium"?"cy":"cg"],
+           ["Multiple Experiment Tools",pa.multiExp?"Yes":"No",pa.multiExp?"cr":"cg"],
+           ["Multiple Personalization Tools",pa.multiPer?"Yes":"No",pa.multiPer?"cr":"cg"],
+           ["Script Complexity",pa.scriptComp,pa.scriptComp==="High"?"cr":pa.scriptComp==="Medium"?"cy":"cg"],
+           ["Growth Maturity",pa.maturity,"cb"]].map(function(x){return html`
+          <div class="stat"><div style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginBottom:"5px"}}>${x[0]}</div><span class=${"badge "+x[2]}>${x[1]}</span></div>`;
+        })}
+      </div>
+      ${data.pain_points&&data.pain_points.length?html`<ul style=${{marginTop:"12px"}}>${data.pain_points.map(function(p){return html`<li>${p}</li>`;})}</ul>`:""}
+    <//>
+
+    <${Sec} title="AI Readiness" accent="#f59e0b">
+      <div style=${{display:"flex",gap:"16px",flexWrap:"wrap"}}>
+        <div style=${{textAlign:"center",background:"var(--bg2)",borderRadius:"var(--r)",padding:"14px 22px",flexShrink:0}}>
+          <div style=${{fontSize:"32px",fontWeight:"700",color:aic,lineHeight:1}}>${ai}</div>
+          <div style=${{fontSize:"10px",color:"var(--t3)",marginTop:"2px",textTransform:"uppercase"}}>AI Index</div>
+        </div>
+        <div style=${{flex:1,minWidth:"180px"}}>
+          <${SBar} label="AI Openness" value=${data.ai_openness||0} color="#6366F1" max=${100}/>
+          <${SBar} label="Agent Readiness" value=${data.agent_readiness||0} color="#f59e0b" max=${100}/>
+          <div style=${{display:"flex",gap:"5px",marginTop:"8px"}}>
+            <span class=${"badge "+(data.has_llms_txt?"cg":"cn")}>${data.has_llms_txt?"✓":"✗"} llms.txt</span>
+            <span class=${"badge "+((data.agent_readiness||0)>=50?"cg":"cn")}>${(data.agent_readiness||0)>=50?"✓":"✗"} Agent ready</span>
+          </div>
+          ${data.ai_summary?html`<p style=${{fontSize:"12px",color:"var(--t2)",marginTop:"8px",lineHeight:1.5}}>${data.ai_summary}</p>`:""}
+        </div>
+      </div>
+    <//>
+
+    <${Sec} title="Opportunity Score" accent="#8b5cf6">
+      ${data.shopify_plus?html`<div style=${{padding:"8px 12px",background:"var(--wb)",border:"1px solid var(--wbd)",borderRadius:"var(--r)",marginBottom:"10px",fontSize:"12px",color:"var(--wt)"}}>
+        ⚠ Shopify Plus — harder to close as early adopter. Pilot fit score reduced.
+      </div>`:""}
+      <div style=${{display:"flex",gap:"16px",flexWrap:"wrap"}}>
+        <div style=${{textAlign:"center",background:"linear-gradient(135deg,#6366F1,#8b5cf6)",borderRadius:"var(--r)",padding:"14px 22px",flexShrink:0}}>
+          <div style=${{fontSize:"36px",fontWeight:"700",color:"white",lineHeight:1}}>${op.t}</div>
+          <div style=${{fontSize:"10px",color:"rgba(255,255,255,.7)",marginTop:"2px"}}>/100</div>
+        </div>
+        <div style=${{flex:1,minWidth:"180px"}}>
+          <${SBar} label="App Spend" value=${op.ss} color="#6366F1" max=${25}/>
+          <${SBar} label="Replaceable Spend" value=${op.rs} color="#10b981" max=${25}/>
+          <${SBar} label="Complexity" value=${op.cs} color="#f59e0b" max=${25}/>
+          <${SBar} label="Pilot Fit" value=${op.ps} color="#8b5cf6" max=${25}/>
+        </div>
+      </div>
+    <//>
+
+    ${data.competitors&&data.competitors.length?html`<${Sec} title="Nordyx Spy Targets" accent="#8b5cf6">
+      <div style=${{display:"flex",flexWrap:"wrap",gap:"7px"}}>${data.competitors.map(function(c){return html`
+        <div class="stat" style=${{minWidth:"150px"}}>
+          <div style=${{fontWeight:"600",color:"var(--t)"}}>${c.name}</div>
+          <div style=${{fontSize:"11px",color:"var(--t2)",marginTop:"2px"}}>${c.domain}</div>
+          <div style=${{fontSize:"11px",color:"var(--t3)"}}>${c.why}</div>
+        </div>`;
+      })}</div>
+    <//>`:""}
+
+    <div class="card">
+      <div class="card-bd" style=${{background:"var(--ib)",borderRadius:"var(--rl)"}}>
+        <div style=${{fontSize:"10px",color:"var(--it)",textTransform:"uppercase",marginBottom:"4px"}}>Nordyx pitch</div>
+        <p style=${{fontSize:"13px",lineHeight:1.6,color:"var(--t)"}}>${data.nordyx_pitch}</p>
+      </div>
+    </div>
+
+
+  </div>`;
+}
+
+// ── PORTFOLIO ─────────────────────────────────────────────────
+function Portfolio(props){
+  var stores=props.stores,onSelect=props.onSelect,onDel=props.onDel;
+  if(!stores.length) return html`<div style=${{textAlign:"center",padding:"3rem",color:"var(--t3)"}}>No stores yet. Use Analyze to get started.</div>`;
+  var sorted=[].concat(stores).sort(function(a,b){return (b.overall_score||0)-(a.overall_score||0);});
+  var freq={};
+  stores.forEach(function(s){(s.apps||[]).forEach(function(a){if(!freq[a.name])freq[a.name]={name:a.name,cov:a.cov,cat:a.cat,count:0};freq[a.name].count++;});});
+  var top=Object.values(freq).sort(function(a,b){return b.count-a.count;}).slice(0,10);
+  var totalSav=stores.reduce(function(s,x){return s+calcFin(x.apps||[]).savings;},0);
+  return html`<div>
+    <div class="g2" style=${{marginBottom:"10px"}}>
+      ${[["Stores",stores.length,"var(--acc)"],["Avg Score",Math.round(stores.reduce(function(s,x){return s+(x.overall_score||0);},0)/stores.length),"var(--acc)"],["Pipeline ARR","$"+Math.round(totalSav*12/1000)+"K","var(--st)"],["Top Lead",sorted[0]&&(sorted[0].store_name||sorted[0].domain)||"—","var(--t)"]].map(function(x){return html`
+        <div class="stat"><div style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginBottom:"2px"}}>${x[0]}</div><div style=${{fontSize:"18px",fontWeight:"700",color:x[2]}}>${x[1]}</div></div>`;
+      })}
+    </div>
+    <div class="card" style=${{marginBottom:"10px"}}>
+      <div class="card-hd"><div class="acl" style=${{background:"#6366F1"}}></div><span class="sl">Store Comparison</span></div>
+      <div class="card-bd ox">
+        <table>
+          <thead><tr><th>Store</th><th>Industry</th><th>Apps</th><th>Spend</th><th>Replaceable</th><th>Savings</th><th>Score</th><th>Priority</th><th>Plan</th><th></th></tr></thead>
+          <tbody>${sorted.map(function(s){
+            var f=calcFin(s.apps||[]),fc=(s.apps||[]).filter(function(a){return a.cov==="full";}).length;
+            return html`<tr>
+              <td style=${{fontWeight:500}}>${s.store_name||s.domain}</td>
+              <td style=${{fontSize:"11px"}}>${s.industry||"—"}</td>
+              <td>${(s.apps||[]).length}</td><td>$${f.total}</td>
+              <td>${fc}/${(s.apps||[]).length}</td>
+              <td style=${{color:"var(--st)",fontWeight:500}}>$${f.savings}/mo</td>
+              <td style=${{fontWeight:700,color:"var(--acc)"}}>${s.overall_score||0}</td>
+              <td><${PB} p=${s.priority}/></td>
+              <td><span class="badge cb">${f.plan}</span></td>
+              <td>
+                <button onClick=${function(){onSelect(s);}} style=${{padding:"4px 8px",borderRadius:"var(--r)",border:"1px solid var(--bd)",background:"var(--bg)",fontSize:"12px",marginRight:"4px"}}>View</button>
+                <button onClick=${function(){onDel(s.domain);}} style=${{padding:"4px 8px",borderRadius:"var(--r)",border:"1px solid var(--dbd)",background:"var(--db)",color:"var(--dt)",fontSize:"12px"}}>Del</button>
+              </td>
+            </tr>`;
+          })}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><div class="acl" style=${{background:"#f59e0b"}}></div><span class="sl">Top Recurring Apps</span></div>
+      <div class="card-bd">${top.map(function(a,i){return html`
+        <div style=${{display:"flex",alignItems:"center",gap:"8px",padding:"6px 0",borderBottom:i<top.length-1?"1px solid var(--bd)":"none"}}>
+          <span style=${{fontSize:"11px",color:"var(--t3)",minWidth:"20px"}}>#${i+1}</span>
+          <span style=${{flex:1,fontSize:"13px",color:"var(--t)"}}>${a.name}</span>
+          <span style=${{fontSize:"11px",color:"var(--t2)"}}>${a.cat}</span>
+          <${CB} c=${a.cov}/>
+          <span style=${{fontSize:"11px",color:"var(--t3)"}}>${a.count}/${stores.length}</span>
+        </div>`;
+      })}</div>
+    </div>
+  </div>`;
+}
+
+// ── INTELLIGENCE ──────────────────────────────────────────────
+function Intelligence(props){
+  var stores=props.stores,apiKey=props.apiKey;
+  var aiState=useState(""); var aiComp=aiState[0],setAiComp=aiState[1];
+  var aiLState=useState(false); var aiL=aiLState[0],setAiL=aiLState[1];
+
+  if(!stores.length) return html`<div style=${{textAlign:"center",padding:"3rem",color:"var(--t3)"}}>Analyze at least one store to unlock Intelligence.</div>`;
+
+  var freq={};
+  stores.forEach(function(s){(s.apps||[]).forEach(function(a){if(!freq[a.name])freq[a.name]={name:a.name,cov:a.cov,cat:a.cat,count:0,totalCost:0};freq[a.name].count++;freq[a.name].totalCost+=(a.cost||0);});});
+  var topApps=Object.values(freq).sort(function(a,b){return b.count-a.count;}).slice(0,15);
+  var maxApp=topApps.length?topApps[0].count:1;
+
+  var catFreq={};
+  Object.values(freq).forEach(function(a){if(!catFreq[a.cat])catFreq[a.cat]={count:0,full:0,partial:0,none:0};catFreq[a.cat].count+=a.count;catFreq[a.cat][a.cov]=(catFreq[a.cat][a.cov]||0)+1;});
+  var topCats=Object.entries(catFreq).sort(function(a,b){return b[1].count-a[1].count;});
+  var maxCat=topCats.length?topCats[0][1].count:1;
+
+  var compFreq={};
+  stores.forEach(function(s){(s.apps||[]).forEach(function(a){var m=COMP.find(function(c){return a.name.toLowerCase().indexOf(c.toLowerCase().split(".")[0])!==-1;});if(m){if(!compFreq[m])compFreq[m]=0;compFreq[m]++;}});});
+  var compArr=COMP.map(function(c){return {name:c,count:compFreq[c]||0};}).sort(function(a,b){return b.count-a.count;});
+  var maxComp=compArr.length&&compArr[0].count>0?compArr[0].count:1;
+
+  var totalSav=stores.reduce(function(s,x){return s+calcFin(x.apps||[]).savings;},0);
+  var avgSav=totalSav/stores.length;
+
+  var missFreq={};
+  stores.forEach(function(s){missingCats(s.apps||[]).forEach(function(c){if(!missFreq[c])missFreq[c]=0;missFreq[c]++;});});
+  var topMiss=Object.entries(missFreq).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
+
+  var sorted=[].concat(stores).sort(function(a,b){return (b.overall_score||0)-(a.overall_score||0);});
+
+  function genComp(){
+    if(!apiKey||!stores.length)return;
+    setAiL(true);
+    var top=Object.entries(freq).sort(function(a,b){return b[1].count-a[1].count;}).slice(0,8).map(function(x){return x[0]+"("+x[1].count+")";}).join(", ");
+    var prompt="Write a 200-word competitive analysis for Nordyx based on pipeline data: "+stores.length+" stores, top apps: "+top+". Focus on: (1) which categories Nordyx competes in most, (2) top competitors detected, (3) strategic positioning opportunity. Investor-ready.";
+    fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:400,messages:[{role:"user",content:prompt}]})})
+    .then(function(r){return r.json();}).then(function(d){setAiComp(d.content[0]&&d.content[0].text||"");}).catch(function(){}).finally(function(){setAiL(false);});
+  }
+
+  return html`<div>
+    <div class="g2" style=${{marginBottom:"10px"}}>
+      ${[["Stores",stores.length,"var(--acc)"],["Total ARR Opp.","$"+Math.round(totalSav*12/1000)+"K/yr","var(--st)"],["Avg Savings/Store","$"+Math.round(avgSav)+"/mo","var(--st)"],["×100 Stores ARR","$"+Math.round(avgSav*100*12/1000)+"K","var(--acc)"],["Apps Detected",Object.values(freq).reduce(function(s,a){return s+a.count;},0),"var(--t)"],["Avg Coverage",Math.round(stores.reduce(function(s,x){return s+((x.apps||[]).filter(function(a){return a.cov==="full";}).length/Math.max((x.apps||[]).length,1)*100);},0)/stores.length)+"%","var(--st)"]].map(function(x){return html`
+        <div class="stat"><div style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginBottom:"2px"}}>${x[0]}</div><div style=${{fontSize:"16px",fontWeight:"700",color:x[2]}}>${x[1]}</div></div>`;
+      })}
+    </div>
+
+    <${Sec} title="ARR Opportunity" accent="#10b981">
+      <div class="g3">${[[50,Math.round(avgSav*50*12/1000)],[100,Math.round(avgSav*100*12/1000)],[500,Math.round(avgSav*500*12/1000)]].map(function(x){return html`
+        <div class="stat" style=${{textAlign:"center"}}>
+          <div style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginBottom:"4px"}}>${x[0]} stores</div>
+          <div style=${{fontSize:"22px",fontWeight:"700",color:"var(--st)"}}>$${x[1]}K ARR</div>
+        </div>`;
+      })}</div>
+    <//>
+
+    <${Sec} title="Top Apps by Frequency" accent="#6366F1">
+      ${topApps.map(function(a){return html`<${BarRow} label=${a.name} value=${a.count} max=${maxApp} color=${a.cov==="full"?"var(--st)":a.cov==="partial"?"var(--wt)":"var(--t3)"}/>`;})}</div>
+      <div style=${{display:"flex",gap:"8px",marginTop:"8px"}}>
+        <span class="badge cg">Green = replaceable</span>
+        <span class="badge cy">Yellow = partial</span>
+        <span class="badge cn">Gray = not covered</span>
+      </div>
+    <//>
+
+    <${Sec} title="Category Coverage Heatmap" accent="#f59e0b">
+      <div class="ox"><table>
+        <thead><tr><th>Category</th><th>Apps</th><th>Full ✓</th><th>Partial ~</th><th>Not Covered ✗</th><th>Coverage</th></tr></thead>
+        <tbody>${topCats.map(function(x){
+          var cat=x[0],d=x[1];
+          var total=(d.full||0)+(d.partial||0)+(d.none||0)||1;
+          var pct=Math.round(((d.full||0)+(d.partial||0)*0.5)/total*100);
+          return html`<tr>
+            <td style=${{fontWeight:500}}>${cat}</td><td>${d.count}</td>
+            <td style=${{color:"var(--st)",fontWeight:600}}>${d.full||0}</td>
+            <td style=${{color:"var(--wt)",fontWeight:600}}>${d.partial||0}</td>
+            <td style=${{color:"var(--dt)",fontWeight:600}}>${d.none||0}</td>
+            <td><span style=${{padding:"2px 8px",borderRadius:"4px",fontSize:"12px",fontWeight:"600",background:pct>=70?"var(--sb)":pct>=40?"var(--wb)":"var(--db)",color:pct>=70?"var(--st)":pct>=40?"var(--wt)":"var(--dt)"}}>${pct}%</span></td>
+          </tr>`;
+        })}</tbody>
+      </table></div>
+    <//>
+
+    <${Sec} title="Competitor Heatmap" accent="#ef4444">
+      ${compArr.map(function(c){return html`<${BarRow} label=${c.name} value=${c.count} max=${maxComp} color="#ef4444"/>`;})}</div>
+    <//>
+
+    <${Sec} title="Feature Demand — Top Missing Categories" accent="#f59e0b">
+      ${topMiss.map(function(x,i){return html`<${BarRow} label=${"#"+(i+1)+" "+x[0]} value=${x[1]} max=${stores.length} color="#f59e0b"/>`;})}</div>
+    <//>
+
+    <${Sec} title=${"Top Opportunities ("+Math.min(sorted.length,10)+" of "+sorted.length+")"} accent="#10b981">
+      <div class="ox"><table>
+        <thead><tr><th>#</th><th>Store</th><th>Score</th><th>Priority</th><th>Savings</th><th>Coverage</th><th>AI</th></tr></thead>
+        <tbody>${sorted.slice(0,10).map(function(s,i){var f=calcFin(s.apps||[]),fc=(s.apps||[]).filter(function(a){return a.cov==="full";}).length;return html`<tr>
+          <td style=${{color:"var(--t3)",fontWeight:600}}>${i+1}</td>
+          <td style=${{fontWeight:600}}>${s.store_name||s.domain}</td>
+          <td style=${{fontWeight:700,color:"var(--acc)"}}>${s.overall_score||0}</td>
+          <td><${PB} p=${s.priority}/></td>
+          <td style=${{color:"var(--st)",fontWeight:600}}>$${f.savings}/mo</td>
+          <td>${fc}/${(s.apps||[]).length}</td>
+          <td>${s.ai_score||0}</td>
+        </tr>`;})}</tbody>
+      </table></div>
+    <//>
+
+    <${Sec} title="Competitive Matrix — Nordyx vs. Market" accent="#ef4444" open=${false}>
+      <div class="ox"><table>
+        <thead><tr><th>Feature</th><th>Nordyx</th><th>Rebuy</th><th>Nosto</th><th>Shoplift</th><th>VWO</th><th>Intelligems</th></tr></thead>
+        <tbody>${MATRIX.map(function(row){return html`<tr>
+          <td style=${{fontWeight:500,whiteSpace:"nowrap"}}>${row.feat}</td>
+          <${MatCell} v=${row.nordyx}/><${MatCell} v=${row.rebuy}/><${MatCell} v=${row.nosto}/>
+          <${MatCell} v=${row.shoplift}/><${MatCell} v=${row.vwo}/><${MatCell} v=${row.intelligems}/>
+        </tr>`;})}</tbody>
+      </table></div>
+    <//>
+
+    <div class="card">
+      <div class="card-bd">
+        <div style=${{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px"}}>
+          <span class="sl">AI Competitive Analysis</span>
+          <button onClick=${genComp} disabled=${aiL} style=${{background:"var(--acc)",color:"white",border:"none",borderRadius:"var(--r)",padding:"6px 12px",fontSize:"12px",fontWeight:"500"}}>
+            ${aiL?"Generating...":"✦ Generate"}
+          </button>
+        </div>
+        ${aiComp?html`<p style=${{fontSize:"13px",lineHeight:1.7,color:"var(--t)",whiteSpace:"pre-wrap"}}>${aiComp}</p>`:html`<p style=${{fontSize:"13px",color:"var(--t3)"}}>Click Generate to produce an AI competitive analysis from your pipeline data.</p>`}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── ROADMAP ───────────────────────────────────────────────────
+function Roadmap(props){
+  var stores=props.stores,apiKey=props.apiKey;
+  var aiState=useState(""); var aiRM=aiState[0],setAiRM=aiState[1];
+  var aiLState=useState(false); var aiL=aiLState[0],setAiL=aiLState[1];
+
+  var cf={};
+  stores.forEach(function(s){(s.apps||[]).forEach(function(a){if(!cf[a.cat])cf[a.cat]=0;cf[a.cat]++;});});
+  var miss={};
+  stores.forEach(function(s){missingCats(s.apps||[]).forEach(function(c){if(!miss[c])miss[c]=0;miss[c]++;});});
+  var topMiss=Object.entries(miss).sort(function(a,b){return b[1]-a[1];}).slice(0,8);
+
+  function genRM(){
+    if(!apiKey)return;
+    setAiL(true);
+    var topCF=Object.entries(cf).sort(function(a,b){return b[1]-a[1];}).slice(0,5).map(function(x){return x[0]+"("+x[1]+")";}).join(", ");
+    var topMissStr=Object.entries(miss).sort(function(a,b){return b[1]-a[1];}).slice(0,5).map(function(x){return x[0]+"("+x[1]+")";}).join(", ");
+    var prompt="Write a 150-word product roadmap recommendation for Nordyx based on: top categories in pipeline: "+topCF+". Top missing categories: "+topMissStr+". Which capabilities to build first and why.";
+    fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:300,messages:[{role:"user",content:prompt}]})})
+    .then(function(r){return r.json();}).then(function(d){setAiRM(d.content[0]&&d.content[0].text||"");}).catch(function(){}).finally(function(){setAiL(false);});
+  }
+
+  return html`<div>
+    <p style=${{fontSize:"13px",color:"var(--t2)",marginBottom:"14px",lineHeight:1.6}}>Roadmap based on ${stores.length} store${stores.length!==1?"s":""} in pipeline.</p>
+    ${Object.entries(RM).map(function(x){var p=x[0],rm=x[1];return html`<div class="card">
+      <div class="card-hd"><div class="acl" style=${{background:rm.color}}></div><span style=${{fontSize:"13px",fontWeight:"700",color:rm.color}}>${p}</span><span class="sl" style=${{marginLeft:"6px"}}>${rm.label}</span></div>
+      <div class="card-bd" style=${{display:"flex",flexWrap:"wrap",gap:"8px"}}>${rm.items.map(function(item){return html`
+        <div class="stat" style=${{minWidth:"120px"}}>
+          <div style=${{fontSize:"13px",fontWeight:"600",color:"var(--t)"}}>${item}</div>
+          ${stores.length?html`<div style=${{fontSize:"11px",color:"var(--t3)",marginTop:"2px"}}>Missing: ${miss[item]||0} stores</div>`:""}
+        </div>`;
+      })}</div>
+    </div>`;
+    })}
+    ${topMiss.length?html`<div class="card">
+      <div class="card-hd"><div class="acl" style=${{background:"#f59e0b"}}></div><span class="sl">Feature Demand</span></div>
+      <div class="card-bd">${topMiss.map(function(x,i){return html`<${BarRow} label=${"#"+(i+1)+" "+x[0]} value=${x[1]} max=${stores.length} color="#f59e0b"/>`;})}</div>
+    </div>`:""}
+    <div class="card">
+      <div class="card-bd">
+        <div style=${{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px"}}>
+          <span class="sl">AI Product Roadmap</span>
+          <button onClick=${genRM} disabled=${aiL} style=${{background:"var(--acc)",color:"white",border:"none",borderRadius:"var(--r)",padding:"6px 12px",fontSize:"12px",fontWeight:"500"}}>${aiL?"Generating...":"✦ Generate"}</button>
+        </div>
+        ${aiRM?html`<p style=${{fontSize:"13px",lineHeight:1.7,color:"var(--t)"}}>${aiRM}</p>`:html`<p style=${{fontSize:"13px",color:"var(--t3)"}}>Generate AI-powered roadmap from pipeline data.</p>`}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── EXPORT ────────────────────────────────────────────────────
+function Export(props){
+  var stores=props.stores,apiKey=props.apiKey;
+  var execState=useState(""); var exec=execState[0],setExec=execState[1];
+  var execLState=useState(false); var execL=execLState[0],setExecL=execLState[1];
+  var csvMsg=useState(""); var csvM=csvMsg[0],setCsvM=csvMsg[1];
+
+  function dlCSV(){
+    if(!stores.length)return;
+    var rows=[["Store","Domain","Country","Industry","Apps","Spend","Savings","Plan","Score","Priority","AI Score","Analyzed"]];
+    stores.forEach(function(s){var f=calcFin(s.apps||[]);rows.push([s.store_name||s.domain,s.domain,s.country||"",s.industry||"",(s.apps||[]).length,"$"+f.total,"$"+f.savings,f.plan,s.overall_score||0,s.priority||"",s.ai_score||0,s.analyzed_at||""]);});
+    var csv=rows.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(",");}).join("\n");
+    var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);a.download="nordyx-pipeline.csv";a.click();
+    setCsvM("✓ Downloaded");setTimeout(function(){setCsvM("");},3000);
+  }
+
+  function dlApps(){
+    var rows=[["Store","App","Category","Coverage","Feature","Est Cost"]];
+    stores.forEach(function(s){(s.apps||[]).forEach(function(a){rows.push([s.store_name||s.domain,a.name,a.cat,a.cov,a.feat||"",a.cost||0]);});});
+    var csv=rows.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(",");}).join("\n");
+    var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);a.download="nordyx-apps.csv";a.click();
+  }
+
+  function dlHubSpot(){
+    var rows=[["First Name","Last Name","Company","Website","Amount","Nordyx Score","Priority","Plan","Notes"]];
+    stores.forEach(function(s){var f=calcFin(s.apps||[]);rows.push(["","",s.store_name||s.domain,"https://"+s.domain,f.savings*12,s.overall_score||0,s.priority||"Medium",f.plan,"Apps: "+(s.apps||[]).length+", Savings: $"+f.savings+"/mo"]);});
+    var csv=rows.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(",");}).join("\n");
+    var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);a.download="nordyx-hubspot.csv";a.click();
+  }
+
+  function genExec(){
+    if(!apiKey||!stores.length)return;
+    setExecL(true);
+    var totalSav=stores.reduce(function(s,x){return s+calcFin(x.apps||[]).savings;},0);
+    var avgScore=Math.round(stores.reduce(function(s,x){return s+(x.overall_score||0);},0)/stores.length);
+    var top3=[].concat(stores).sort(function(a,b){return (b.overall_score||0)-(a.overall_score||0);}).slice(0,3).map(function(s){return s.store_name||s.domain;}).join(", ");
+    var appFreq={};stores.forEach(function(s){(s.apps||[]).forEach(function(a){if(!appFreq[a.name])appFreq[a.name]=0;appFreq[a.name]++;});});
+    var topAppsStr=Object.entries(appFreq).sort(function(a,b){return b[1]-a[1];}).slice(0,5).map(function(x){return x[0];}).join(", ");
+    var prompt=[
+      "Write a 200-word investor-ready executive summary for Nordyx.",
+      "Nordyx is a Shopify app that replaces 15 separate storefront apps (upsell widgets, countdown timers, exit intent popups, announcement bars, bundles, sticky cart, back-in-stock alerts, wishlist, and more) with one unified runtime.",
+      "Nordyx also includes Nordyx Spy (competitive intelligence) and Nordyx Agentic (AI agent support for ChatGPT/Perplexity shoppers).",
+      "Pipeline data: "+stores.length+" Shopify stores analyzed.",
+      "Average opportunity score: "+avgScore+"/100.",
+      "Total monthly savings opportunity across pipeline: $"+totalSav+"/mo.",
+      "Projected ARR at 100 stores: $"+Math.round(totalSav/stores.length*100*12/1000)+"K.",
+      "Top prospects by score: "+top3+".",
+      "Most common apps detected: "+topAppsStr+".",
+      "Focus on: (1) market validation from real store data, (2) ARR opportunity, (3) why one unified runtime beats point solutions.",
+      "Do NOT mention energy, IoT, or any unrelated industry. This is strictly Shopify ecommerce."
+    ].join(" ");
+    fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:400,messages:[{role:"user",content:prompt}]})})
+    .then(function(r){return r.json();}).then(function(d){setExec(d.content[0]&&d.content[0].text||"");}).catch(function(){}).finally(function(){setExecL(false);});
+  }
+
+  return html`<div>
+    <div class="g2" style=${{marginBottom:"14px"}}>
+      ${[
+        ["Pipeline CSV","All stores summary",dlCSV,"#10b981",csvM||"Export CSV"],
+        ["Apps CSV","Full app inventory",dlApps,"#6366F1","Export Apps"],
+        ["HubSpot CSV","CRM-ready import",dlHubSpot,"#ff7a59","Export HubSpot"],
+        ["PDF Report","Print-friendly view",function(){window.print();},"#8b5cf6","Print / PDF"],
+      ].map(function(x){return html`
+        <div class="card" style=${{marginBottom:0}}>
+          <div class="card-bd">
+            <div style=${{fontWeight:"600",color:"var(--t)",marginBottom:"3px"}}>${x[0]}</div>
+            <div style=${{fontSize:"12px",color:"var(--t2)",marginBottom:"10px"}}>${x[1]}</div>
+            <button onClick=${x[2]} style=${{background:x[3],color:"white",border:"none",borderRadius:"var(--r)",padding:"7px 14px",fontSize:"13px",fontWeight:"500",width:"100%"}}>${x[4]}</button>
+          </div>
+        </div>`;
+      })}
+    </div>
+    <div class="card">
+      <div class="card-bd">
+        <div style=${{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px"}}>
+          <div><div style=${{fontWeight:"600",color:"var(--t)",marginBottom:"2px"}}>AI Executive Summary</div><div style=${{fontSize:"12px",color:"var(--t2)"}}>Investor-ready pipeline summary</div></div>
+          <button onClick=${genExec} disabled=${execL||!stores.length} style=${{background:"var(--acc)",color:"white",border:"none",borderRadius:"var(--r)",padding:"7px 14px",fontSize:"13px",fontWeight:"500"}}>
+            ${execL?"Generating...":"✦ Generate"}
+          </button>
+        </div>
+        ${exec?html`<div style=${{background:"var(--bg2)",border:"1px solid var(--bd)",borderRadius:"var(--r)",padding:"14px"}}>
+          <p style=${{fontSize:"13px",lineHeight:1.7,color:"var(--t)",whiteSpace:"pre-wrap"}}>${exec}</p>
+          <button onClick=${function(){navigator.clipboard.writeText(exec);}} style=${{marginTop:"10px",background:"var(--bg3)",border:"1px solid var(--bd)",borderRadius:"var(--r)",padding:"5px 10px",fontSize:"12px"}}>Copy</button>
+        </div>`:html`<p style=${{fontSize:"13px",color:"var(--t3)"}}>Generate from ${stores.length} analyzed store${stores.length!==1?"s":""}.</p>`}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── MAIN APP ──────────────────────────────────────────────────
+function App(){
+  var tabS=useState("analyze"); var tab=tabS[0],setTab=tabS[1];
+  var urlS=useState(""); var url=urlS[0],setUrl=urlS[1];
+  var keyS=useState(function(){return localStorage.getItem("nx-k")||"";}); var key=keyS[0],setKey=keyS[1];
+  var workerS=useState(function(){return localStorage.getItem("nx-w")||"";}); var workerUrl=workerS[0],setWorkerUrl=workerS[1];
+  var showWS=useState(!localStorage.getItem("nx-w")); var showW=showWS[0],setShowW=showWS[1];
+  var showKS=useState(!localStorage.getItem("nx-k")); var showK=showKS[0],setSK=showKS[1];
+  var loadS=useState(false); var loading=loadS[0],setL=loadS[1];
+  var stS=useState(""); var status=stS[0],setSt=stS[1];
+  var resS=useState(null); var result=resS[0],setR=resS[1];
+  var errS=useState(null); var err=errS[0],setE=errS[1];
+  var storesS=useState([]);
+  var stores=storesS[0],setS=storesS[1];
+  var loadingState=useState(true); var storesLoading=loadingState[0],setStoresLoading=loadingState[1];
+  var syncErrState=useState(null); var syncErr=syncErrState[0],setSyncErr=syncErrState[1];
+
+  function saveKey(){localStorage.setItem("nx-k",key);setSK(false);}
+  function saveWorker(){localStorage.setItem("nx-w",workerUrl);setShowW(false);loadStores();}
+  function getWorker(){return (workerUrl||localStorage.getItem("nx-w")||"").replace(/\/$/,"");}
+  function loadStores(){
+    var w=getWorker();
+    if(!w){setStoresLoading(false);return;}
+    setStoresLoading(true);setSyncErr(null);
+    fetch(w+"/stores").then(function(r){return r.json();})
+    .then(function(d){setS(Array.isArray(d)?d:[]);})
+    .catch(function(){setSyncErr("Could not connect to Worker. Check URL.");})
+    .finally(function(){setStoresLoading(false);});
+  }
+  function saveStores(list){
+    setS(list);
+    // list is the full updated list — we just pushed/removed one item
+    // handled by saveStore / delStore
+  }
+  function saveStore(store){
+    var w=getWorker();
+    if(!w){return;}
+    fetch(w+"/stores",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(store)})
+    .catch(function(e){setSyncErr("Save failed: "+e.message);});
+  }
+  function delStore(domain){
+    var w=getWorker();
+    if(!w){return;}
+    fetch(w+"/stores/"+encodeURIComponent(domain),{method:"DELETE"})
+    .catch(function(e){setSyncErr("Delete failed: "+e.message);});
+  }
+
+  useEffect(function(){loadStores();},[]);
+  function analyze(){
+    if(!key){setSK(true);setE("Enter your Anthropic API key first.");return;}
+    var domain=url.replace(/https?:\/\//,"").replace(/\/$/,"").split("/")[0];
+    if(!domain)return;
+    setL(true);setE(null);setR(null);setSt("Fetching HTML...");
+    fhtml(domain).then(function(raw){
+      var scanned=raw?scan(raw):[];
+      setSt(scanned.length+" apps found · enriching...");
+      return fetch("https://api.anthropic.com/v1/messages",{
+        method:"POST",
+        headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+        body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:3500,system:SYS,
+          tools:[{type:"web_search_20250305",name:"web_search"}],
+          messages:[{role:"user",content:"Domain: "+domain+"\nPre-scanned apps:\n"+JSON.stringify(scanned)+"\nResearch and return JSON."}]})
+      }).then(function(r){
+        if(!r.ok)return r.json().then(function(e){throw new Error(e.error&&e.error.message||"API error "+r.status);});
+        return r.json();
+      }).then(function(data){
+        setSt("Processing...");
+        var txt=data.content.filter(function(b){return b.type==="text";}).map(function(b){return b.text;}).join("");
+        var m=txt.match(/\{[\s\S]*\}/);
+        if(!m)throw new Error("Could not parse response — try again.");
+        var en=JSON.parse(m[0]);
+        var allApps=scanned.slice();
+        (en.additional_apps||[]).forEach(function(a){if(!allApps.find(function(x){return x.name.toLowerCase()===a.name.toLowerCase();}))allApps.push({name:a.name,cat:a.cat,cov:a.cov,feat:a.feat||null,cost:a.cost,p:[]});});
+        var f=calcFin(allApps),op=calcOpp(allApps,f,en.ai_score||0,en.shopify_plus);
+        var final=Object.assign({},en,{domain:domain,apps:allApps,overall_score:en.overall_score||op.t,analyzed_at:new Date().toISOString()});
+        delete final.additional_apps;
+        setR(final);
+        var newList=[final].concat(stores.filter(function(s){return s.domain!==domain;}));
+        setS(newList);
+        saveStore(final);
+      });
+    }).catch(function(e){setE(e.message);}).then(function(){setL(false);setSt("");});
+  }
+
+  var TABS=[["analyze","Analyze"],["portfolio","Pipeline"+(stores.length?" ("+stores.length+")":"")],["intelligence","Intelligence"],["roadmap","Roadmap"],["export","Export"]];
+
+  return html`<div>
+    <div style=${{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"14px",flexWrap:"wrap",gap:"10px"}}>
+      <div style=${{display:"flex",alignItems:"center",gap:"8px"}}>
+        <div style=${{width:"28px",height:"28px",background:"var(--acc)",borderRadius:"6px",display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <span style=${{color:"white",fontSize:"14px",fontWeight:"700"}}>N</span>
+        </div>
+        <div>
+          <div style=${{fontSize:"15px",fontWeight:"700",color:"var(--t)"}}>Nordyx Prospect Intelligence</div>
+          <div style=${{fontSize:"11px",color:"var(--t3)"}}>v5 · ${stores.length} stores · ${workerUrl?"☁️ synced":"⚠️ local only"} · ${key?"API key set":"Set API key →"}</div>
+        </div>
+      </div>
+      <div style=${{display:"flex",gap:"6px"}}>
+        <button onClick=${function(){setShowW(!showW);}} style=${{padding:"6px 10px",borderRadius:"var(--r)",border:"1px solid "+(workerUrl?"var(--sbd)":"var(--dbd)"),background:workerUrl?"var(--sb)":"var(--db)",color:workerUrl?"var(--st)":"var(--dt)",fontSize:"12px",fontWeight:"500"}}>
+          ${workerUrl?"☁️ Cloud":"⚠️ Connect cloud"}
+        </button>
+        <button onClick=${function(){setSK(!showK);}} style=${{padding:"6px 10px",borderRadius:"var(--r)",border:"1px solid "+(key?"var(--sbd)":"var(--dbd)"),background:key?"var(--sb)":"var(--db)",color:key?"var(--st)":"var(--dt)",fontSize:"12px",fontWeight:"500"}}>
+          ${key?"🔑 Key set":"⚠️ API key"}
+        </button>
+      </div>
+    </div>
+
+    <div style=${{overflowX:"auto",marginBottom:"14px"}}>
+      <div class="tabs" style=${{width:"max-content"}}>
+        ${TABS.map(function(x){return html`<button class=${"tab"+(tab===x[0]?" on":"")} onClick=${function(){setTab(x[0]);}}>${x[1]}</button>`;
+        })}
+      </div>
+    </div>
+
+    ${showW?html`<div class="card" style=${{marginBottom:"14px",border:"2px solid var(--acc)"}}>
+      <div class="card-bd">
+        <p style=${{fontSize:"13px",fontWeight:"600",color:"var(--t)",marginBottom:"4px"}}>☁️ Connect to Cloud Storage</p>
+        <p style=${{fontSize:"12px",color:"var(--t2)",marginBottom:"8px"}}>Enter your Cloudflare Worker URL. Data will sync across all devices.</p>
+        <div style=${{display:"flex",gap:"8px"}}>
+          <input value=${workerUrl} onInput=${function(e){setWorkerUrl(e.target.value);}} onKeyDown=${function(e){if(e.key==="Enter")saveWorker();}} placeholder="https://nordyx-intel.yuvalbloomberg.workers.dev"/>
+          <button onClick=${saveWorker} style=${{padding:"0 16px",background:"var(--acc)",color:"white",border:"none",borderRadius:"var(--r)",fontSize:"13px",fontWeight:"600",whiteSpace:"nowrap"}}>Connect</button>
+        </div>
+      </div>
+    </div>`:""}
+    ${showK?html`<div class="card" style=${{marginBottom:"14px"}}>
+      <div class="card-bd">
+        <p style=${{fontSize:"12px",color:"var(--t2)",marginBottom:"8px"}}>🔒 Stored in your browser only. Sent only to api.anthropic.com.</p>
+        <div style=${{display:"flex",gap:"8px"}}>
+          <input type="password" value=${key} onInput=${function(e){setKey(e.target.value);}} onKeyDown=${function(e){if(e.key==="Enter")saveKey();}} placeholder="sk-ant-api03-..."/>
+          <button onClick=${saveKey} style=${{padding:"0 16px",background:"var(--acc)",color:"white",border:"none",borderRadius:"var(--r)",fontSize:"13px",fontWeight:"600",whiteSpace:"nowrap"}}>Save</button>
+        </div>
+      </div>
+    </div>`:""}
+    ${storesLoading?html`<div style=${{textAlign:"center",padding:"20px",color:"var(--t3)",fontSize:"13px"}}>☁️ Loading from cloud...</div>`:""}
+    ${syncErr?html`<div style=${{background:"var(--db)",border:"1px solid var(--dbd)",borderRadius:"var(--r)",padding:"10px 14px",fontSize:"12px",color:"var(--dt)",marginBottom:"10px"}}>${syncErr}</div>`:""}
+
+    ${tab==="analyze"?html`<div>
+      <div style=${{display:"flex",gap:"8px",marginBottom:"16px"}}>
+        <input value=${url} onInput=${function(e){setUrl(e.target.value);}} onKeyDown=${function(e){if(e.key==="Enter"&&!loading)analyze();}} placeholder="https://meowmeowtweet.com"/>
+        <button onClick=${analyze} disabled=${loading||!url}
+          style=${{padding:"0 20px",background:loading?"var(--bg2)":"var(--acc)",color:loading?"var(--t2)":"white",border:loading?"1px solid var(--bd)":"none",borderRadius:"var(--r)",fontSize:"13px",fontWeight:"600",minHeight:"38px",whiteSpace:"nowrap",cursor:loading?"not-allowed":"pointer"}}>
+          ${loading?html`<span class="spin">⟳</span>${" "+status}`:"Analyze →"}
+        </button>
+      </div>
+      ${err?html`<div style=${{background:"var(--db)",border:"1px solid var(--dbd)",borderRadius:"var(--r)",padding:"10px 14px",fontSize:"13px",color:"var(--dt)",marginBottom:"14px"}}>⚠ ${err}</div>`:""}
+      ${result?html`<${ProspectCard} data=${result} apiKey=${key}/>`:""}
+    </div>`:""}
+    ${tab==="portfolio"?html`<${Portfolio} stores=${stores} onSelect=${function(s){setR(s);setTab("analyze");}} onDel=${function(d){var newList=stores.filter(function(s){return s.domain!==d;});setS(newList);delStore(d);}}/>`:""}
+    ${tab==="intelligence"?html`<${Intelligence} stores=${stores} apiKey=${key}/>`:""}
+    ${tab==="roadmap"?html`<${Roadmap} stores=${stores} apiKey=${key}/>`:""}
+    ${tab==="export"?html`<${Export} stores=${stores} apiKey=${key}/>`:""}
+  </div>`;
+}
+
+render(html`<${App}/>`,document.getElementById("root"));
+})();
+</script>
+</body>
+</html>
