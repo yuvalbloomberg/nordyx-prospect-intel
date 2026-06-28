@@ -225,15 +225,17 @@ var MATRIX=[
 // System prompt for Claude API
 var SYS=[
   "You are a Shopify store intelligence analyst for Nordyx.",
-  "Nordyx has exactly 15 apps: CONVERT: Countdown Timer, Product Upsell Widget, Cart Drawer, Product Bundles, Frequently Bought Together, Product Options, Free Shipping Progress Bar, Sticky Add-To-Cart.",
-  "PROMOTE: Smart Banner, Announcement Bar.",
-  "RETAIN: Exit Intent Modal, Back-in-Stock Alerts, Smart Wishlist.",
-  "INFORM: Behavioral Indicator, Stock Counter.",
+  "Nordyx has 21 apps across 6 journey stages: SURFACE: Announcement Bar, Smart Banner, Stock Counter, Behavioral Indicator. GUIDE: Recommendation Engine, Quiz/Guided Selling. CONVERT: Countdown Timer, Product Upsell Widget, Cart Drawer, Product Bundles, Frequently Bought Together, Product Options, Free Shipping Progress Bar, Sticky Add-To-Cart. OPTIMIZE: Experiment Engine. TRUST: Review Hub, Social Proof Widget. RETAIN: Exit Intent Modal, Back-in-Stock Alerts, Smart Wishlist, Loyalty Engine.",
   "Research the store using web search and return ONLY valid JSON with no markdown:",
   '{"store_name":"","country":"","industry":"","employees":"","social_following":"","sku_count":"","priority":"High|Medium|Low","overall_score":0,',
   '"additional_apps":[{"name":"","cat":"Convert|Promote|Retain|Inform|Experiments|Personalization|Reviews|Search|Analytics|Email/SMS|Affiliate|Loyalty|Support|Video|Subscription|Returns|Quiz|Other","cov":"full|partial|none","feat":"or null","cost":0}],',
   '"shopify_plus":false,"ai_score":0,"ai_openness":0,"agent_readiness":0,"has_llms_txt":false,"ai_summary":"",',
+  '"reviews":{"platform":"","total":0,"average_rating":0,"last_review_date":"","last_6mo_count":0,"trend":"growing|stable|declining|unknown","trend_note":""},',
+  '"store_health":{"domain_age_years":0,"social_last_post_days":0,"blog_active":false,"press_mentions":false,"out_of_stock_pct":"low|medium|high|unknown","mobile_app":false,"sms_list":false,"loyalty_members":false,"red_flags":[],"positive_signals":[]},',
   '"competitors":[{"name":"","domain":"","why":""}],"pain_points":["","",""],"nordyx_pitch":["",""]}',
+  "reviews.trend: use order history signals, review dates, and social activity to estimate. growing=accelerating reviews, stable=consistent, declining=slowing or gap > 3 months, unknown=insufficient data.",
+  "store_health.red_flags examples: no reviews in 6+ months, majority products out of stock, inactive social 60+ days, domain < 1 year.",
+  "store_health.positive_signals examples: press coverage, active blog, SMS list present, loyalty programme active, mobile app, high review velocity.",
   "nordyx_pitch must be an array of 4-6 short analytical bullet strings, each max 20 words, no sales language.",
   "Cover: 1) store profile snapshot 2) which specific apps Nordyx replaces 3) stack fragmentation pain 4) honest gap what Nordyx does NOT cover 5) AI readiness one-liner 6) Nordyx Spy top competitors to track."
 ].join(" ");
@@ -411,6 +413,53 @@ function ProspectCard(props){
             <div style=${{fontSize:"11px",color:"var(--st)",marginTop:"3px"}}>$${f.savings*12}/yr · ROI ${f.roi}</div>
           </div>
         </div>
+
+        <!-- REVIEWS ROW -->
+        ${data.reviews&&data.reviews.platform?html`<div style=${{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(120px,1fr))",gap:"8px",marginBottom:"10px"}}>
+          <div style=${{background:"var(--bg2)",border:"1px solid var(--bd)",borderRadius:"var(--r)",padding:"10px 12px"}}>
+            <div style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginBottom:"3px"}}>Platform</div>
+            <div style=${{fontSize:"13px",fontWeight:"600",color:"var(--t)"}}>${data.reviews.platform}</div>
+          </div>
+          <div style=${{background:"var(--bg2)",border:"1px solid var(--bd)",borderRadius:"var(--r)",padding:"10px 12px"}}>
+            <div style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginBottom:"3px"}}>Total Reviews</div>
+            <div style=${{fontSize:"16px",fontWeight:"700",color:"var(--acc)"}}>${(data.reviews.total||0).toLocaleString()}</div>
+          </div>
+          <div style=${{background:"var(--bg2)",border:"1px solid var(--bd)",borderRadius:"var(--r)",padding:"10px 12px"}}>
+            <div style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginBottom:"3px"}}>Avg Rating</div>
+            <div style=${{fontSize:"16px",fontWeight:"700",color:"var(--acc)"}}>${data.reviews.average_rating?"★ "+data.reviews.average_rating:"—"}</div>
+          </div>
+          <div style=${{background:"var(--bg2)",border:"1px solid var(--bd)",borderRadius:"var(--r)",padding:"10px 12px"}}>
+            <div style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginBottom:"3px"}}>Last 6 Months</div>
+            <div style=${{fontSize:"16px",fontWeight:"700",color:data.reviews.last_6mo_count>0?"var(--st)":"var(--dt)"}}>${data.reviews.last_6mo_count||0}</div>
+          </div>
+          <div style=${{background:"var(--bg2)",border:"1px solid var(--bd)",borderRadius:"var(--r)",padding:"10px 12px"}}>
+            <div style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",marginBottom:"3px"}}>Trend</div>
+            <div style=${{fontSize:"13px",fontWeight:"600",color:data.reviews.trend==="growing"?"var(--st)":data.reviews.trend==="declining"?"var(--dt)":"var(--t)"}}>${data.reviews.trend||"—"}</div>
+            ${data.reviews.trend_note?html`<div style=${{fontSize:"10px",color:"var(--t3)",marginTop:"2px"}}>${data.reviews.trend_note}</div>`:""}
+          </div>
+        </div>`:""}
+
+        <!-- STORE HEALTH -->
+        ${data.store_health?html`<div style=${{marginBottom:"10px"}}>
+          <div style=${{fontSize:"10px",color:"var(--t3)",textTransform:"uppercase",letterSpacing:".05em",marginBottom:"6px"}}>Store Health Signals</div>
+          <div style=${{display:"flex",flexWrap:"wrap",gap:"5px",marginBottom:"6px"}}>
+            ${data.store_health.mobile_app?html`<span class="badge cg">✓ Mobile App</span>`:""}
+            ${data.store_health.sms_list?html`<span class="badge cg">✓ SMS List</span>`:""}
+            ${data.store_health.loyalty_members?html`<span class="badge cg">✓ Loyalty Active</span>`:""}
+            ${data.store_health.press_mentions?html`<span class="badge cg">✓ Press Coverage</span>`:""}
+            ${data.store_health.blog_active?html`<span class="badge cg">✓ Active Blog</span>`:""}
+            ${data.store_health.domain_age_years?html`<span class="badge cb">${data.store_health.domain_age_years}yr domain</span>`:""}
+            ${data.store_health.social_last_post_days?html`<span class=${"badge "+(data.store_health.social_last_post_days>60?"cr":"cb")}>Social: ${data.store_health.social_last_post_days}d ago</span>`:""}
+          </div>
+          ${data.store_health.red_flags&&data.store_health.red_flags.length?html`<div style=${{padding:"7px 10px",background:"var(--db)",borderRadius:"var(--r)",border:"1px solid var(--dbd)",marginBottom:"5px"}}>
+            <span style=${{fontSize:"11px",color:"var(--dt)",fontWeight:"600"}}>⚠ </span>
+            <span style=${{fontSize:"11px",color:"var(--dt)"}}>${data.store_health.red_flags.join(" · ")}</span>
+          </div>`:""}
+          ${data.store_health.positive_signals&&data.store_health.positive_signals.length?html`<div style=${{padding:"7px 10px",background:"var(--sb)",borderRadius:"var(--r)",border:"1px solid var(--sbd)"}}>
+            <span style=${{fontSize:"11px",color:"var(--st)",fontWeight:"600"}}>✓ </span>
+            <span style=${{fontSize:"11px",color:"var(--st)"}}>${data.store_health.positive_signals.join(" · ")}</span>
+          </div>`:""}
+        </div>`:""}
 
         ${mc.length?html`<div style=${{padding:"8px 10px",background:"var(--wb)",borderRadius:"var(--r)",border:"1px solid var(--wbd)"}}>
           <span style=${{fontSize:"11px",color:"var(--wt)",fontWeight:"600"}}>Missing categories: </span>
