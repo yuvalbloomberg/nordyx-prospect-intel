@@ -228,16 +228,18 @@ var SYS=[
   "Nordyx has 21 apps across 6 journey stages: SURFACE: Announcement Bar, Smart Banner, Stock Counter, Behavioral Indicator. GUIDE: Recommendation Engine, Quiz/Guided Selling. CONVERT: Countdown Timer, Product Upsell Widget, Cart Drawer, Product Bundles, Frequently Bought Together, Product Options, Free Shipping Progress Bar, Sticky Add-To-Cart. OPTIMIZE: Experiment Engine. TRUST: Review Hub, Social Proof Widget. RETAIN: Exit Intent Modal, Back-in-Stock Alerts, Smart Wishlist, Loyalty Engine.",
   "Research the store using web search and return ONLY valid JSON with no markdown:",
   '{"store_name":"","country":"","industry":"","employees":"","social_following":"","sku_count":"","priority":"High|Medium|Low","overall_score":0,',
-  '"additional_apps":[{"name":"","cat":"Convert|Promote|Retain|Inform|Experiments|Personalization|Reviews|Search|Analytics|Email/SMS|Affiliate|Loyalty|Support|Video|Subscription|Returns|Quiz|Other","cov":"full|partial|none","feat":"or null","cost":0}],',
+  '"additional_apps":[{"name":"","cat":"","cov":"full|partial|none","feat":"","cost":0}],',
   '"shopify_plus":false,"ai_score":0,"ai_openness":0,"agent_readiness":0,"has_llms_txt":false,"ai_summary":"",',
   '"reviews":{"platform":"","total":0,"average_rating":0,"last_review_date":"","last_6mo_count":0,"trend":"growing|stable|declining|unknown","trend_note":""},',
   '"store_health":{"domain_age_years":0,"social_last_post_days":0,"blog_active":false,"press_mentions":false,"out_of_stock_pct":"low|medium|high|unknown","mobile_app":false,"sms_list":false,"loyalty_members":false,"red_flags":[],"positive_signals":[]},',
-  '"competitors":[{"name":"","domain":"","why":""}],"pain_points":["","",""],"nordyx_pitch":["",""]}',
-  "reviews.trend: use order history signals, review dates, and social activity to estimate. growing=accelerating reviews, stable=consistent, declining=slowing or gap > 3 months, unknown=insufficient data.",
-  "store_health.red_flags examples: no reviews in 6+ months, majority products out of stock, inactive social 60+ days, domain < 1 year.",
-  "store_health.positive_signals examples: press coverage, active blog, SMS list present, loyalty programme active, mobile app, high review velocity.",
-  "nordyx_pitch must be an array of 4-6 short analytical bullet strings, each max 20 words, no sales language.",
-  "Cover: 1) store profile snapshot 2) which specific apps Nordyx replaces 3) stack fragmentation pain 4) honest gap what Nordyx does NOT cover 5) AI readiness one-liner 6) Nordyx Spy top competitors to track."
+  '"contact":{"name":"","title":"","linkedin":"","twitter":"","email":"","notes":""},',
+  '"competitors":[{"name":"","domain":"","why":""}],"pain_points":[""],"nordyx_pitch":[""]}',
+  "contact.name: founder, CEO, owner or most senior decision-maker found. Search LinkedIn, About page, Crunchbase, press mentions.",
+  "contact.linkedin: full URL if found, empty string if not. contact.email: only if publicly listed. contact.notes: any useful context about this person.",
+  "reviews.trend: growing=accelerating, stable=consistent, declining=slowing or gap over 3 months, unknown=insufficient data.",
+  "store_health red_flags: no reviews in 6+ months, majority out of stock, inactive social 60+ days.",
+  "store_health positive_signals: press coverage, active blog, SMS list, loyalty active, mobile app, high review velocity.",
+  "nordyx_pitch: 4-6 short analytical bullets max 20 words each, no sales language."
 ].join(" ");
 
 // ── UTILS ─────────────────────────────────────────────────────
@@ -459,6 +461,25 @@ function ProspectCard(props){
             <span style=${{fontSize:"11px",color:"var(--st)",fontWeight:"600"}}>✓ </span>
             <span style=${{fontSize:"11px",color:"var(--st)"}}>${data.store_health.positive_signals.join(" · ")}</span>
           </div>`:""}
+        </div>`:""}
+
+        <!-- CONTACT -->
+        ${data.contact&&data.contact.name?html`<div style=${{display:"flex",alignItems:"flex-start",gap:"12px",padding:"10px 12px",background:"var(--bg2)",border:"1px solid var(--bd)",borderRadius:"var(--r)",marginBottom:"10px"}}>
+          <div style=${{width:"36px",height:"36px",borderRadius:"50%",background:"var(--acc)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <span style=${{color:"white",fontSize:"15px",fontWeight:"700"}}>${(data.contact.name||"?")[0]}</span>
+          </div>
+          <div style=${{flex:1,minWidth:0}}>
+            <div style=${{display:"flex",alignItems:"center",gap:"8px",flexWrap:"wrap",marginBottom:"3px"}}>
+              <span style=${{fontSize:"14px",fontWeight:"600",color:"var(--t)"}}>${data.contact.name}</span>
+              ${data.contact.title?html`<span style=${{fontSize:"12px",color:"var(--t2)"}}>${data.contact.title}</span>`:""}
+            </div>
+            <div style=${{display:"flex",gap:"6px",flexWrap:"wrap"}}>
+              ${data.contact.linkedin?html`<a href=${data.contact.linkedin} target="_blank" style=${{fontSize:"12px",color:"var(--acc)",textDecoration:"none",padding:"2px 8px",border:"1px solid var(--acc)",borderRadius:"4px"}}>LinkedIn →</a>`:""}
+              ${data.contact.twitter?html`<a href=${"https://twitter.com/"+data.contact.twitter} target="_blank" style=${{fontSize:"12px",color:"var(--t2)",textDecoration:"none",padding:"2px 8px",border:"1px solid var(--bd)",borderRadius:"4px"}}>X/Twitter →</a>`:""}
+              ${data.contact.email?html`<a href=${"mailto:"+data.contact.email} style=${{fontSize:"12px",color:"var(--t2)",textDecoration:"none",padding:"2px 8px",border:"1px solid var(--bd)",borderRadius:"4px"}}>${data.contact.email}</a>`:""}
+            </div>
+            ${data.contact.notes?html`<div style=${{fontSize:"11px",color:"var(--t3)",marginTop:"4px"}}>${data.contact.notes}</div>`:""}
+          </div>
         </div>`:""}
 
         ${mc.length?html`<div style=${{padding:"8px 10px",background:"var(--wb)",borderRadius:"var(--r)",border:"1px solid var(--wbd)"}}>
